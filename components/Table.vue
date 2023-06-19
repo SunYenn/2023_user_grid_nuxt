@@ -23,7 +23,7 @@
       <template slot="header">
         <div>
           <span>이름</span>
-          <i class="el-icon-d-caret" @click="toggleOrder('user_name')"></i>
+          <i class="el-icon-d-caret pointer" @click="toggleOrder('user_name')"></i>
         </div>
       </template>
       <template slot-scope="scope">
@@ -49,7 +49,7 @@
       <template slot="header">
         <div>
           <span>등록일시</span>
-          <i class="el-icon-d-caret" @click="toggleOrder('cre_dt')"></i>
+          <i class="el-icon-d-caret pointer" @click="toggleOrder('cre_dt')"></i>
         </div>
       </template>
       <template slot-scope="scope">
@@ -67,7 +67,7 @@
       <template slot="header">
         <div>
           <span>수정일시</span>
-          <i class="el-icon-d-caret" @click="toggleOrder('udt_dt')"></i>
+          <i class="el-icon-d-caret pointer" @click="toggleOrder('udt_dt')"></i>
         </div>
       </template>
       <template slot-scope="scope">

@@ -5,6 +5,7 @@
       <h3>사용자 관리</h3>
     </div>
 
+    <el-form :model="search" @submit.native.prevent="search">
       <div class="search">
         <div>
           <div class="search_div">
@@ -35,6 +36,8 @@
           </div>
         </div>
       </div>
+    </el-form>
+
     <div class="btns">
       <el-button v-if="selectedIdxs.length > 0" @click="test">삭제</el-button>
       <el-button>등록</el-button>
@@ -63,6 +66,7 @@
 
 <script>
 import Table from '@/components/Table.vue';
+import axios from 'axios'
 
 export default {
   components: {
@@ -89,7 +93,31 @@ export default {
     }
   },
 
+  mounted() {
+    this.call_axios();
+  },
+
   methods: {
+    call_axios() {
+      axios({
+        method: 'post',
+        url: 'http://localhost:8080/api/user/list',
+        data: {
+          search : this.search, 
+          order : this.order
+        }
+      }).then((response) => {
+        // this.$message.success('유저');
+        // setTimeout(() => {
+        //   window.location.href = this.$store.getters.getFrontURL + 'boardList';
+        // }, 500);
+      }).catch((error) => {
+        console.error(error);
+        this.$message.error('유저정보를 가져오는데 실패했습니다.');
+      })
+    },
+
+    // 전화번호 검색 정규식
     regexPhonenum() {
       this.search.phonenum = this.search.phonenum.replace(/[^0-9]/g, "")
 									                               .replace(/(^02|^0505|^1[0-9]{3}|^0[0-9]{2})([0-9]+)?([0-9]{4})$/,"$1-$2-$3").replace("--", "-");
