@@ -1,38 +1,40 @@
 <template>
   <div class="container">
+
     <div class="header">
       <h3>사용자 관리</h3>
     </div>
-    <div class="search">
-      <div>
-        <div class="search_div">
-          <span class="input-label">ID</span>
-          <el-input
-            placeholder="ID"
-            v-model="search.id">
-          </el-input>
-        </div>
-        <div class="search_div">
-          <span class="input-label">이름</span>
-          <el-input
-            placeholder="이름"
-            v-model="search.name">
-          </el-input>
-        </div>
-        <div class="search_div">
-          <span class="input-label">전화번호</span>
-          <el-input
-            placeholder="전화번호"
-            v-model="search.phonenum"
-            @input="regexPhonenum()">
-          </el-input>
-        </div>
-        <div class="search_div">
-          <el-button>초기화</el-button>
-          <el-button type="primary">검색</el-button>
+
+      <div class="search">
+        <div>
+          <div class="search_div">
+            <span class="input-label">ID</span>
+            <el-input
+              placeholder="ID"
+              v-model="search.id">
+            </el-input>
+          </div>
+          <div class="search_div">
+            <span class="input-label">이름</span>
+            <el-input
+              placeholder="이름"
+              v-model="search.name">
+            </el-input>
+          </div>
+          <div class="search_div">
+            <span class="input-label">전화번호</span>
+            <el-input
+              placeholder="전화번호"
+              v-model="search.phonenum"
+              @input="regexPhonenum()">
+            </el-input>
+          </div>
+          <div class="search_div">
+            <el-button>초기화</el-button>
+            <el-button type="primary">검색</el-button>
+          </div>
         </div>
       </div>
-    </div>
     <div class="btns">
       <el-button v-if="selectedIdxs.length > 0" @click="test">삭제</el-button>
       <el-button>등록</el-button>
@@ -41,7 +43,7 @@
     </div>
 
     <div class="components">
-      <Table :selectedIdxs="selectedIdxs" @select="setSelectedIdxs"/>
+      <Table :selectedIdxs="selectedIdxs" :order="order" @select="setSelectedIdxs" @setOrder="setOrder"/>
     </div>
 
     <div class="footer">
@@ -55,6 +57,7 @@
         :current-page="current_page" :total="total_page">
       </el-pagination>
     </div>
+
   </div>
 </template>
 
@@ -77,6 +80,11 @@ export default {
         name: '',
         phonenum: '',
       },
+      order : [{
+        user_name: 'asc',
+        cre_dt: 'asc',
+        udt_dt: 'asc'
+      }],
       selectedIdxs: []
     }
   },
@@ -92,12 +100,14 @@ export default {
     handleCurrentChange() {
 
     },
+
+    // props
     setSelectedIdxs(selectedIdxs) {
       this.selectedIdxs = selectedIdxs;
     },
-
-    test() {
-      console.log(this.selectedIdxs);
+    setOrder(order) {
+      this.order = order;
+      console.log(JSON.stringify(this.order[0]));
     }
 
   }
