@@ -63,7 +63,6 @@
 <script>
 import Table from '@/components/Table.vue';
 import Register from '@/components/Register.vue';
-import axios from 'axios';
 
 export default {
   components: {
@@ -95,21 +94,21 @@ export default {
   },
 
   methods: {
-    call_axios() {
+    async call_axios() {
 
-      axios({
-        method: 'post',
-        url: 'http://localhost:8080/api/user/list',
-        data: {
-          userMst: this.search_data,
-          userRoleGrpMap: this.order_data[0]
-        }
-      }).then((response) => {
+      let data = {
+        userMst: this.search_data,
+        userRoleGrpMap: this.order_data[0]
+      }
 
-      }).catch((error) => {
-        console.error(error);
-        this.$message.error('유저정보를 가져오는데 실패했습니다.');
+      await this.$axios.post('/user/list', data)
+      .then((res) => {
+        
       })
+      .catch((error) => {
+        console.error(error);
+      })
+
     },
 
     // 전화번호 검색 정규식

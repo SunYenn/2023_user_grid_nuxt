@@ -36,7 +36,18 @@ export default {
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
+    '@nuxtjs/axios',
   ],
+
+  axios: {
+    baseURL: 'http://localhost:8080/api', // Spring Boot 서버 주소
+    credentials: true,
+    proxyHeaders: false,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, PUT, POST, DELETE, OPTIONS',
+    },
+  },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
