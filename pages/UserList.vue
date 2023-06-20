@@ -12,27 +12,27 @@
             <span class="input-label">ID</span>
             <el-input
               placeholder="ID"
-              v-model="search.id">
+              v-model="search.user_id">
             </el-input>
           </div>
           <div class="search_div">
             <span class="input-label">이름</span>
             <el-input
               placeholder="이름"
-              v-model="search.name">
+              v-model="search.user_name">
             </el-input>
           </div>
           <div class="search_div">
             <span class="input-label">전화번호</span>
             <el-input
               placeholder="전화번호"
-              v-model="search.phonenum"
+              v-model="search.user_telno"
               @input="regexPhonenum()">
             </el-input>
           </div>
           <div class="search_div">
             <el-button>초기화</el-button>
-            <el-button type="primary">검색</el-button>
+            <el-button type="primary" native-type="search">검색</el-button>
           </div>
         </div>
       </div>
@@ -66,7 +66,7 @@
 
 <script>
 import Table from '@/components/Table.vue';
-import axios from 'axios'
+import axios from 'axios';
 
 export default {
   components: {
@@ -80,14 +80,14 @@ export default {
       current_page : 1,
       search : {
         page_size: 10,
-        id: '',
-        name: '',
-        phonenum: '',
+        user_id: '',
+        user_name: '',
+        user_telno: '',
       },
       order : [{
-        user_name: 'asc',
-        cre_dt: 'asc',
-        udt_dt: 'asc'
+        user_name_fg: 'asc',
+        cre_dt_fg: 'asc',
+        udt_dt_fg: 'asc'
       }],
       selectedIdxs: []
     }
@@ -99,12 +99,13 @@ export default {
 
   methods: {
     call_axios() {
+
       axios({
         method: 'post',
         url: 'http://localhost:8080/api/user/list',
         data: {
-          search : this.search, 
-          order : this.order
+          userMst : this.search,
+          userRoleGrpMap : this.order[0]
         }
       }).then((response) => {
         // this.$message.success('유저');
@@ -119,9 +120,14 @@ export default {
 
     // 전화번호 검색 정규식
     regexPhonenum() {
-      this.search.phonenum = this.search.phonenum.replace(/[^0-9]/g, "")
-									                               .replace(/(^02|^0505|^1[0-9]{3}|^0[0-9]{2})([0-9]+)?([0-9]{4})$/,"$1-$2-$3").replace("--", "-");
+      this.search.user_telno = this.search.user_telno.replace(/[^0-9]/g, "")
+									                                   .replace(/(^02|^0505|^1[0-9]{3}|^0[0-9]{2})([0-9]+)?([0-9]{4})$/,"$1-$2-$3").replace("--", "-");
     },
+
+    search() {
+      this.call_axios()
+    },
+
     chg_pagesize() {
       
     },
@@ -135,7 +141,7 @@ export default {
     },
     setOrder(order) {
       this.order = order;
-      console.log(JSON.stringify(this.order[0]));
+      this.call_axios();
     }
 
   }
