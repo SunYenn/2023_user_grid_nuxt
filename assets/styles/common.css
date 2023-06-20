@@ -35,10 +35,15 @@ body {
     justify-content: flex-end;
 }
 
-.search>div {
+.form>div {
     border: 1px solid #ccc;
+    border-bottom: none;
     display: flex;
     padding: 15px;
+}
+
+.form>div:last-child {
+    border-bottom: 1px solid #ccc;
 }
 
 .search_div:last-child {
@@ -79,4 +84,70 @@ body {
 
 .grid .cell {
     text-align: center;
+}
+
+.RegiPoP {
+    position: absolute;
+	z-index: 999;
+	top: 0;
+	left: 0;
+	width: calc(100% - 40px);
+	height: calc(100vh - 40px);
+	background-color: rgba(0, 0, 0, .3);
+    padding: 0px;
+}
+
+.RegiPoP > div {
+    background-color: #fff;
+	position: absolute;
+	top: calc(50vh - 240px);
+	left: calc(50% - 400px);
+	border-radius: 5px;
+    /* offset-x | offset-y | blur-radius | spread-radius | color */
+	box-shadow: 3px 3px 3px 1px rgba(0, 0, 0, .2);
+	padding: 0px;
+	width: 800px;
+}
+
+.RegiPoP > div > div {
+    margin: 15px 20px;
+}
+
+.RegiPoP .header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.RegiPoP .header i {
+    font-weight: 500;
+}
+
+.RegiPoP .header i:hover {
+    font-weight: 900;
+}
+
+
+.RegiPoP .form > div {
+    display: flex;
+    justify-content: space-around;
+}
+
+.RegiPoP .form > div > div {
+    width: 50%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.RegiPoP .form > div > div > .el-input {
+    width: 200px;
+}
+
+.RegiPoP .footer {
+    display: flex;
+    justify-content: center
+}
+
+.RegiPoP .footer > button {
+    width: 100px;
+    border: 1px solid #aaa;
 }

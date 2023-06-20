@@ -87,7 +87,7 @@ export default {
       type: Array,
       default: () => [],
     },
-    order: {
+    order_data: {
       type: Array,
       default: () => [],
     }
@@ -224,8 +224,8 @@ export default {
     // 정렬 기능
     toggleOrder(field) {
       this.orderFlag[field] = !this.orderFlag[field];
-      this.order[0][field] = this.orderFlag[field] == true ? 'asc' : 'desc';
-      this.$emit('setOrder', this.order);
+      this.order_data[0][field] = this.orderFlag[field] == true ? 'asc' : 'desc';
+      this.$emit('setOrder', this.order_data);
     }
   },
 

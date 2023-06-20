@@ -5,33 +5,26 @@
       <h3>사용자 관리</h3>
     </div>
 
-    <el-form :model="search" @submit.native.prevent="search">
-      <div class="search">
+    <el-form :model="search_data" @submit.native.prevent="search">
+      <div class="form">
         <div>
           <div class="search_div">
             <span class="input-label">ID</span>
-            <el-input
-              placeholder="ID"
-              v-model="search.user_id">
+            <el-input placeholder="ID" v-model="search_data.user_id">
             </el-input>
           </div>
           <div class="search_div">
             <span class="input-label">이름</span>
-            <el-input
-              placeholder="이름"
-              v-model="search.user_name">
+            <el-input placeholder="이름" v-model="search_data.user_name">
             </el-input>
           </div>
           <div class="search_div">
             <span class="input-label">전화번호</span>
-            <el-input
-              placeholder="전화번호"
-              v-model="search.user_telno"
-              @input="regexPhonenum()">
+            <el-input placeholder="전화번호" v-model="search_data.user_telno" @input="regexPhonenum()">
             </el-input>
           </div>
           <div class="search_div">
-            <el-button>초기화</el-button>
+            <el-button @click="reset">초기화</el-button>
             <el-button type="primary" native-type="search">검색</el-button>
           </div>
         </div>
@@ -40,25 +33,28 @@
 
     <div class="btns">
       <el-button v-if="selectedIdxs.length > 0" @click="test">삭제</el-button>
-      <el-button>등록</el-button>
-      <el-button>일괄등록</el-button>
+      <el-button @click="showRegiPop">등록</el-button>
+      <!-- <el-button>일괄등록</el-button> -->
       <el-button>Excel 다운로드</el-button>
     </div>
 
     <div class="components">
-      <Table :selectedIdxs="selectedIdxs" :order="order" @select="setSelectedIdxs" @setOrder="setOrder"/>
+      <Table :selectedIdxs="selectedIdxs" :order_data="order_data" @select="setSelectedIdxs" @setOrder="setOrder" />
     </div>
 
     <div class="footer">
-      <el-select v-model="search.page_size" style="width: 100px;" @change="chg_pagesize">
-          <el-option label="5" value="5" align="center"></el-option>
-          <el-option label="7" value="7" align="center"></el-option>
-          <el-option label="10" value="10" align="center"></el-option>
+      <el-select v-model="search_data.page_size" style="width: 100px;" @change="chg_pagesize">
+        <el-option label="5" value="5" align="center"></el-option>
+        <el-option label="7" value="7" align="center"></el-option>
+        <el-option label="10" value="10" align="center"></el-option>
       </el-select>
-      <el-pagination background layout="prev, pager, next" 
-        @current-change="handleCurrentChange"
+      <el-pagination background layout="prev, pager, next" @current-change="handleCurrentChange"
         :current-page="current_page" :total="total_page">
       </el-pagination>
+    </div>
+
+    <div class="RegiPoP" style="display: none;">
+      <Register />
     </div>
 
   </div>
@@ -66,6 +62,7 @@
 
 <script>
 import Table from '@/components/Table.vue';
+import Register from '@/components/Register.vue';
 import axios from 'axios';
 
 export default {
@@ -75,16 +72,16 @@ export default {
 
   data() {
     return {
-      userData : [],
-      total_page : 100,
-      current_page : 1,
-      search : {
+      userData: [],
+      total_page: 100,
+      current_page: 1,
+      search_data: {
         page_size: 10,
         user_id: '',
         user_name: '',
         user_telno: '',
       },
-      order : [{
+      order_data: [{
         user_name_fg: 'asc',
         cre_dt_fg: 'asc',
         udt_dt_fg: 'asc'
@@ -104,14 +101,11 @@ export default {
         method: 'post',
         url: 'http://localhost:8080/api/user/list',
         data: {
-          userMst : this.search,
-          userRoleGrpMap : this.order[0]
+          userMst: this.search_data,
+          userRoleGrpMap: this.order_data[0]
         }
       }).then((response) => {
-        // this.$message.success('유저');
-        // setTimeout(() => {
-        //   window.location.href = this.$store.getters.getFrontURL + 'boardList';
-        // }, 500);
+
       }).catch((error) => {
         console.error(error);
         this.$message.error('유저정보를 가져오는데 실패했습니다.');
@@ -120,8 +114,10 @@ export default {
 
     // 전화번호 검색 정규식
     regexPhonenum() {
-      this.search.user_telno = this.search.user_telno.replace(/[^0-9]/g, "")
-									                                   .replace(/(^02|^0505|^1[0-9]{3}|^0[0-9]{2})([0-9]+)?([0-9]{4})$/,"$1-$2-$3").replace("--", "-");
+      this.search_data.user_telno = this.search_data.user_telno
+        .replace(/[^0-9]/g, "")
+        .replace(/(^02|^0505|^1[0-9]{3}|^0[0-9]{2})([0-9]+)?([0-9]{4})$/, "$1-$2-$3")
+        .replace("--", "-");
     },
 
     search() {
@@ -129,7 +125,7 @@ export default {
     },
 
     chg_pagesize() {
-      
+
     },
     handleCurrentChange() {
 
@@ -139,9 +135,22 @@ export default {
     setSelectedIdxs(selectedIdxs) {
       this.selectedIdxs = selectedIdxs;
     },
-    setOrder(order) {
-      this.order = order;
+    setOrder(order_data) {
+      this.order_data = order_data;
       this.call_axios();
+    },
+
+    // 등록창 열기
+    showRegiPop() {
+      const regiDiv = document.getElementsByClassName("RegiPoP")[0];
+      regiDiv.style.display = '';
+    },
+
+    // 검색창 초기화
+    reset() {
+      this.search_data.user_id = '';
+      this.search_data.user_name = '';
+      this.search_data.user_telno = '';
     }
 
   }
