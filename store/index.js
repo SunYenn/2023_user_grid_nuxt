@@ -6,9 +6,9 @@ const createStore = () => {
   return new Vuex.Store({
     modules: {
       ...modules
-    },
-
+    }
   });
+  
 };
 
 export default createStore;

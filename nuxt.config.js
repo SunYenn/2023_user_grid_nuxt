@@ -47,10 +47,5 @@ export default {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET, PUT, POST, DELETE, OPTIONS',
     },
-  },
-
-  // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {
-    transpile: [/^element-ui/],
   }
 }

@@ -1,4 +1,3 @@
-import axios from 'axios'
 import { setCookie, getCookie, deleteCookie } from '@/utils/cookie' // 쿠키 유틸리티 함수 임포트
 
 export default {
@@ -16,22 +15,26 @@ export default {
   },
 
   actions: {
-    login({ commit }, { id, pw }) {
+    login({ commit }, { user_id, user_pwd, last_login_ip }) {
 
       const params = {
-        "id": id,
-        "pw": pw
+        userMst: {
+          user_id : user_id,
+          last_login_ip : last_login_ip
+        },
+        userPwd: {
+          user_pwd : user_pwd
+        },
       }
 
-      axios.post("http://localhost:8080/api/user/login", JSON.stringify(params), {
-        headers: { 'content-type': 'application/json' }
-      }).then(res => {
+      this.$axios.post("http://localhost:8080/api/user/login", params)
+      .then(res => {
         alert("정보가 확인되었습니다.\n환영합니다!")
-        commit('login', res);
-        setCookie('token', res.headers['accesstoken']);
-        setCookie('nickname', res.data['nickname']);
-        setCookie('id', res.data['id']);
-        this.$router.push("/boardList")
+        // commit('login', res);
+        // setCookie('token', res.headers['accesstoken']);
+        // setCookie('nickname', res.data['nickname']);
+        // setCookie('id', res.data['id']);
+        // this.$router.push("/boardList")
       }).catch(e => {
         console.log(e)
         alert("로그인 요청에 문제가 발생했습니다.")

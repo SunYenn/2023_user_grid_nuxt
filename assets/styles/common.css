@@ -16,12 +16,37 @@ body {
     height: calc(100vh - 45px);
 }
 
+.login {
+    margin: 180px 550px;
+    height: calc(100vh - 360px);
+    box-shadow: 1px 2px 5px 1px rgba(0, 0, 0, .1);
+}
+
 .container>div {
     padding: 20px;
     border-bottom: 1px solid #eee;
 }
 
-.container form > div {
+.login > form > div {
+    padding: 30px 40px;
+    border-bottom: 1px solid #eee;
+}
+
+.login > form > div:last-child {
+    border-bottom: none;
+}
+
+.login > form > div input{
+    height: 50px;
+    background-color: #f3f3f3;
+}
+
+.login > form > div button{
+    width: 100%;
+    height: 50px;
+}
+
+.container > form > .form {
     padding: 20px;
     border-bottom: 1px solid #eee;
 }
@@ -50,7 +75,7 @@ body {
     width: 500px;
 }
 
-.search_div > .el-input {
+.search_div > .el-input  {
     width: 250px;
 }
 
@@ -93,23 +118,23 @@ body {
 	left: 0;
 	width: calc(100% - 40px);
 	height: calc(100vh - 40px);
-	background-color: rgba(0, 0, 0, .3);
+	background-color: rgba(0, 0, 0, .4);
     padding: 0px;
 }
 
-.RegiPoP > div {
+.RegiPoP > .regiForm {
     background-color: #fff;
 	position: absolute;
 	top: calc(50vh - 240px);
 	left: calc(50% - 400px);
 	border-radius: 5px;
     /* offset-x | offset-y | blur-radius | spread-radius | color */
-	box-shadow: 3px 3px 3px 1px rgba(0, 0, 0, .2);
+	box-shadow: 3px 3px 3px 1px rgba(0, 0, 0, .15);
 	padding: 0px;
 	width: 800px;
 }
 
-.RegiPoP > div > div {
+.RegiPoP > .regiForm > div {
     margin: 15px 20px;
 }
 
@@ -139,6 +164,10 @@ body {
 }
 
 .RegiPoP .form > div > div > .el-input {
+    width: 200px;
+}
+
+.RegiPoP .form > div > div > .el-select {
     width: 200px;
 }
 
