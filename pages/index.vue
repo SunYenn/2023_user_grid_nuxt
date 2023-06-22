@@ -49,8 +49,10 @@ export default {
   },
 
   async asyncData({ req }) {
+    console.log("1 : " + req.headers['x-forwarded-for']);
+    console.log("2 : " + req.connection.remoteAddress)
+
     const clientIP = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-    return { clientIP };
   },
 
   methods: {

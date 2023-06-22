@@ -8,6 +8,13 @@ body {
     background-color: #eee;
 }
 
+.logoutBtn {
+    position: fixed;
+    top: 33px;
+    right: 33px;
+    z-index: 99;
+}
+
 .container {
     background-color: white;
     margin: 20px;

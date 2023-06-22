@@ -1,6 +1,8 @@
 <template>
   <div class="container">
 
+    <el-button class="logoutBtn" @click="logout" style="margin: 0;">Logout</el-button>
+
     <div class="header">
       <h3>사용자 관리</h3>
     </div>
@@ -63,6 +65,8 @@
 <script>
 import Table from '@/components/Table.vue';
 import Register from '@/components/Register.vue';
+import { mapActions } from 'vuex';
+import { getCookie } from '@/utils/cookie'
 
 export default {
   components: {
@@ -74,8 +78,8 @@ export default {
       userData: [],
       total_page: 100,
       current_page: 1,
+      page_size: 10,
       search_data: {
-        page_size: 10,
         user_id: '',
         user_name: '',
         user_telno: '',
@@ -94,6 +98,9 @@ export default {
   },
 
   methods: {
+
+    ...mapActions(['logout']),
+
     async call_axios() {
 
       let data = {
@@ -101,7 +108,11 @@ export default {
         userRoleGrpMap: this.order_data[0]
       }
 
-      await this.$axios.post('/user/list', data)
+      await this.$axios.post('/user/list', data, {
+        headers : {
+          'accesstoken': getCookie('token'),
+        }
+      })
       .then((res) => {
         
       })
