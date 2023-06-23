@@ -48,23 +48,13 @@ export default {
     }
   },
 
-  async asyncData({ req }) {
-    console.log("1 : " + req.headers['x-forwarded-for']);
-    console.log("2 : " + req.connection.remoteAddress)
-
-    const clientIP = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-  },
-
   methods: {
 
     login() {
-
       this.$refs.form.validate(valid => {
         if (valid) {
           const { user_id, user_pwd} = this.form;
-          const last_login_ip = this.clientIP;
-
-          this.$store.dispatch('login', { user_id, user_pwd, last_login_ip}) // 로그인
+          this.$store.dispatch('login', { user_id, user_pwd}) // 로그인
         } else {
           this.$message.error('양식을 다시 확인해주세요.');
         }

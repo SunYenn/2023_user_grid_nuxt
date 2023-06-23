@@ -117,7 +117,10 @@ export default {
         
       })
       .catch((error) => {
-        console.error(error);
+        this.$message.error('권한이 없습니다. \n로그인 화면으로 넘어갑니다.');
+        setTimeout(() => {
+          window.location.href = "/";
+        }, 500);
       })
 
     },

@@ -40,8 +40,9 @@ export default {
   ],
 
   axios: {
-    baseURL: 'http://localhost:8080/api', // Spring Boot 서버 주소
+    baseURL: 'http://192.168.1.139:8080/api', // Spring Boot 서버 주소
     credentials: false, // 쿠키값 안 보내지게 설정 
     proxyHeaders: false,
-  }
+  },
+
 }

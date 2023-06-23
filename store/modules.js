@@ -7,6 +7,7 @@ export default {
       return getCookie('name');
     },
     BackURL() {
+      console.log("getBackurl : " + window.location.hostname);
       return `http://${window.location.hostname}:8080/api/`;
     },
     FrontURL() {
@@ -15,22 +16,20 @@ export default {
   },
 
   actions: {
-    login({commit}, { user_id, user_pwd, last_login_ip }) {
+    login({commit}, { user_id, user_pwd}) {
 
       const params = {
         ettUserMst: {
           user_id : user_id,
-          last_login_ip : last_login_ip
         },
         ettUserPwd: {
           user_pwd : user_pwd
         },
       }
 
-      this.$axios.post("http://localhost:8080/api/auth/login", params)
+      this.$axios.post("http://192.168.1.139:8080/api/auth/login", params)
       .then(res => {
         alert("정보가 확인되었습니다.\n환영합니다!")
-        commit('login', res);
         setCookie('token', res.headers['accesstoken']);
         setCookie('name', res.data['ettUserMst']['user_name']);
         setCookie('id', res.data['ettUserMst']['user_id']);
