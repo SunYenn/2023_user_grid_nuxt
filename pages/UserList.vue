@@ -7,27 +7,27 @@
       <h3>사용자 관리</h3>
     </div>
 
-    <el-form :model="search_data" @submit.native.prevent="search">
+    <el-form :model="paging[0]" @submit.native.prevent="call_axios">
       <div class="form">
         <div>
           <div class="search_div">
             <span class="input-label">ID</span>
-            <el-input placeholder="ID" v-model="search_data.user_id">
+            <el-input placeholder="ID" v-model="paging[0].search_id">
             </el-input>
           </div>
           <div class="search_div">
             <span class="input-label">이름</span>
-            <el-input placeholder="이름" v-model="search_data.user_name">
+            <el-input placeholder="이름" v-model="paging[0].search_name">
             </el-input>
           </div>
           <div class="search_div">
             <span class="input-label">전화번호</span>
-            <el-input placeholder="전화번호" v-model="search_data.user_telno" @input="regexPhonenum()">
+            <el-input placeholder="전화번호" v-model="paging[0].search_telno" @input="regexPhonenum()">
             </el-input>
           </div>
           <div class="search_div">
             <el-button @click="reset">초기화</el-button>
-            <el-button type="primary" native-type="search">검색</el-button>
+            <el-button type="primary" native-type="call_axios">검색</el-button>
           </div>
         </div>
       </div>
@@ -41,17 +41,17 @@
     </div>
 
     <div class="components">
-      <Table :selectedIdxs="selectedIdxs" :order_data="order_data" @select="setSelectedIdxs" @setOrder="setOrder" />
+      <Table :selectedIdxs="selectedIdxs" :paging="paging" :tableData="tableData" @select="setSelectedIdxs" @setPaging="setPaging" />
     </div>
 
     <div class="footer">
-      <el-select v-model="search_data.page_size" style="width: 100px;" @change="chg_pagesize">
+      <el-select v-model="paging[0].page_size" style="width: 100px;" @change="call_axios">
         <el-option label="5" value="5" align="center"></el-option>
         <el-option label="7" value="7" align="center"></el-option>
         <el-option label="10" value="10" align="center"></el-option>
       </el-select>
       <el-pagination background layout="prev, pager, next" @current-change="handleCurrentChange"
-        :current-page="current_page" :total="total_page">
+        :current-page="paging[0].current_page" :total="total_page">
       </el-pagination>
     </div>
 
@@ -75,19 +75,21 @@ export default {
 
   data() {
     return {
-      userData: [],
+      tableData: [],
       total_page: 100,
-      current_page: 1,
-      page_size: 10,
-      search_data: {
-        user_id: '',
-        user_name: '',
-        user_telno: '',
-      },
-      order_data: [{
-        user_name_fg: 'asc',
-        cre_dt_fg: 'asc',
-        udt_dt_fg: 'asc'
+      
+      paging : [{
+        page_size: 10, 
+        current_page: 1,
+
+        user_name_fg: '',
+        cre_dt_fg: '',
+        udt_dt_fg: '',
+
+        search_id : '',
+        search_name : '',
+        search_telno : ''
+
       }],
       selectedIdxs: []
     }
@@ -103,18 +105,14 @@ export default {
 
     async call_axios() {
 
-      let data = {
-        userMst: this.search_data,
-        userRoleGrpMap: this.order_data[0]
-      }
-
-      await this.$axios.post('/user/list', data, {
+      await this.$axios.post('/user/list', this.paging[0] , {
         headers : {
           'accesstoken': getCookie('token'),
         }
       })
       .then((res) => {
-        
+        this.tableData = res.data.userMsts
+        this.total_page = res.data.total_page * 10;
       })
       .catch((error) => {
         this.$message.error('권한이 없습니다. \n로그인 화면으로 넘어갑니다.');
@@ -127,29 +125,23 @@ export default {
 
     // 전화번호 검색 정규식
     regexPhonenum() {
-      this.search_data.user_telno = this.search_data.user_telno
+      this.paging[0].search_telno = this.paging[0].search_telno
         .replace(/[^0-9]/g, "")
         .replace(/(^02|^0505|^1[0-9]{3}|^0[0-9]{2})([0-9]+)?([0-9]{4})$/, "$1-$2-$3")
         .replace("--", "-");
     },
 
-    search() {
-      this.call_axios()
-    },
-
-    chg_pagesize() {
-
-    },
-    handleCurrentChange() {
-
+    handleCurrentChange(current_page) {
+      this.paging[0].current_page = current_page;
+      this.call_axios();
     },
 
     // props
     setSelectedIdxs(selectedIdxs) {
       this.selectedIdxs = selectedIdxs;
     },
-    setOrder(order_data) {
-      this.order_data = order_data;
+    setPaging(paging) {
+      this.paging = paging;
       this.call_axios();
     },
 
@@ -161,9 +153,15 @@ export default {
 
     // 검색창 초기화
     reset() {
-      this.search_data.user_id = '';
-      this.search_data.user_name = '';
-      this.search_data.user_telno = '';
+      this.paging[0].search_id = '';
+      this.paging[0].search_name = '';
+      this.paging[0].search_telno = '';
+
+      this.paging[0].user_name_fg = '',
+      this.paging[0].cre_dt_fg = '',
+      this.paging[0].udt_dt_fg = '',
+
+      this.call_axios();
     }
 
   }

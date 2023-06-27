@@ -87,7 +87,11 @@ export default {
       type: Array,
       default: () => [],
     },
-    order_data: {
+    paging: {
+      type: Array,
+      default: () => [],
+    },
+    tableData: {
       type: Array,
       default: () => [],
     }
@@ -103,79 +107,79 @@ export default {
         udt_dt_Fg : true
       },
 
-      tableData: [{
-        user_seq : 71,
-        user_name: '다층 선예은',
-        user_id: 'bjoh3',
-        role_grp_name : '구역관리자',
-        cre_id: 'admin013',
-        cre_dt: '2023-06-01 14:19:08',
-        udt_id: 'bjoh3',
-        udt_dt: '2023-06-01 15:19:08'
-      },{
-        user_seq : 72,
-        user_name: '다층 선예은',
-        user_id: 'bjoh3',
-        role_grp_name : '구역관리자',
-        cre_id: 'admin013',
-        cre_dt: '2023-06-01 14:19:08',
-        udt_id: 'bjoh3',
-        udt_dt: '2023-06-01 15:19:08'
-      },{
-        user_seq : 73,
-        user_name: '다층 선예은',
-        user_id: 'bjoh3',
-        role_grp_name : '구역관리자',
-        cre_id: 'admin013',
-        cre_dt: '2023-06-01 14:19:08',
-        udt_id: 'bjoh3',
-        udt_dt: '2023-06-01 15:19:08'
-      },{
-        user_seq : 74,
-        user_name: '다층 선예은',
-        user_id: 'bjoh3',
-        role_grp_name : '구역관리자',
-        cre_id: 'admin013',
-        cre_dt: '2023-06-01 14:19:08',
-        udt_id: 'bjoh3',
-        udt_dt: '2023-06-01 15:19:08'
-      },{
-        user_seq : 75,
-        user_name: '다층 선예은',
-        user_id: 'bjoh3',
-        role_grp_name : '구역관리자',
-        cre_id: 'admin013',
-        cre_dt: '2023-06-01 14:19:08',
-        udt_id: 'bjoh3',
-        udt_dt: '2023-06-01 15:19:08'
-      },{
-        user_seq : 76,
-        user_name: '다층 선예은',
-        user_id: 'bjoh3',
-        role_grp_name : '구역관리자',
-        cre_id: 'admin013',
-        cre_dt: '2023-06-01 14:19:08',
-        udt_id: 'bjoh3',
-        udt_dt: '2023-06-01 15:19:08'
-      },{
-        user_seq : 77,
-        user_name: '다층 선예은',
-        user_id: 'bjoh3',
-        role_grp_name : '구역관리자',
-        cre_id: 'admin013',
-        cre_dt: '2023-06-01 14:19:08',
-        udt_id: 'bjoh3',
-        udt_dt: '2023-06-01 15:19:08'
-      },{
-        user_seq : 78,
-        user_name: '다층 선예은',
-        user_id: 'bjoh3',
-        role_grp_name : '구역관리자',
-        cre_id: 'admin013',
-        cre_dt: '2023-06-01 14:19:08',
-        udt_id: 'bjoh3',
-        udt_dt: '2023-06-01 15:19:08'
-      }]
+      // tableData: [{
+      //   user_seq : 71,
+      //   user_name: '다층 선예은',
+      //   user_id: 'bjoh3',
+      //   role_grp_name : '구역관리자',
+      //   cre_id: 'admin013',
+      //   cre_dt: '2023-06-01 14:19:08',
+      //   udt_id: 'bjoh3',
+      //   udt_dt: '2023-06-01 15:19:08'
+      // },{
+      //   user_seq : 72,
+      //   user_name: '다층 선예은',
+      //   user_id: 'bjoh3',
+      //   role_grp_name : '구역관리자',
+      //   cre_id: 'admin013',
+      //   cre_dt: '2023-06-01 14:19:08',
+      //   udt_id: 'bjoh3',
+      //   udt_dt: '2023-06-01 15:19:08'
+      // },{
+      //   user_seq : 73,
+      //   user_name: '다층 선예은',
+      //   user_id: 'bjoh3',
+      //   role_grp_name : '구역관리자',
+      //   cre_id: 'admin013',
+      //   cre_dt: '2023-06-01 14:19:08',
+      //   udt_id: 'bjoh3',
+      //   udt_dt: '2023-06-01 15:19:08'
+      // },{
+      //   user_seq : 74,
+      //   user_name: '다층 선예은',
+      //   user_id: 'bjoh3',
+      //   role_grp_name : '구역관리자',
+      //   cre_id: 'admin013',
+      //   cre_dt: '2023-06-01 14:19:08',
+      //   udt_id: 'bjoh3',
+      //   udt_dt: '2023-06-01 15:19:08'
+      // },{
+      //   user_seq : 75,
+      //   user_name: '다층 선예은',
+      //   user_id: 'bjoh3',
+      //   role_grp_name : '구역관리자',
+      //   cre_id: 'admin013',
+      //   cre_dt: '2023-06-01 14:19:08',
+      //   udt_id: 'bjoh3',
+      //   udt_dt: '2023-06-01 15:19:08'
+      // },{
+      //   user_seq : 76,
+      //   user_name: '다층 선예은',
+      //   user_id: 'bjoh3',
+      //   role_grp_name : '구역관리자',
+      //   cre_id: 'admin013',
+      //   cre_dt: '2023-06-01 14:19:08',
+      //   udt_id: 'bjoh3',
+      //   udt_dt: '2023-06-01 15:19:08'
+      // },{
+      //   user_seq : 77,
+      //   user_name: '다층 선예은',
+      //   user_id: 'bjoh3',
+      //   role_grp_name : '구역관리자',
+      //   cre_id: 'admin013',
+      //   cre_dt: '2023-06-01 14:19:08',
+      //   udt_id: 'bjoh3',
+      //   udt_dt: '2023-06-01 15:19:08'
+      // },{
+      //   user_seq : 78,
+      //   user_name: '다층 선예은',
+      //   user_id: 'bjoh3',
+      //   role_grp_name : '구역관리자',
+      //   cre_id: 'admin013',
+      //   cre_dt: '2023-06-01 14:19:08',
+      //   udt_id: 'bjoh3',
+      //   udt_dt: '2023-06-01 15:19:08'
+      // }]
     }
   },
 
@@ -224,8 +228,8 @@ export default {
     // 정렬 기능
     toggleOrder(field) {
       this.orderFlag[field] = !this.orderFlag[field];
-      this.order_data[0][field] = this.orderFlag[field] == true ? 'asc' : 'desc';
-      this.$emit('setOrder', this.order_data);
+      this.paging[0][field] = this.orderFlag[field] == true ? 'asc' : 'desc';
+      this.$emit('setPaging', this.paging);
     }
   },
 

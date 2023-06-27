@@ -142,15 +142,14 @@ export default {
 
         async regi_user() {
 
-            this.register.ettUserMst.acct_exp_dt = formatDateTimeField(this.register.ettUserMst.acct_exp_dt)
-            this.register.ettUserMst.card_exp_dt = formatDateTimeField(this.register.ettUserMst.card_exp_dt)
+            this.register.ettUserMst.acct_exp_dt = moment.utc(this.register.ettUserMst.acct_exp_dt).utcOffset(9).format('YYYY-MM-DD HH:mm:ss')
+            this.register.ettUserMst.card_exp_dt = moment.utc(this.register.ettUserMst.card_exp_dt).utcOffset(9).format('YYYY-MM-DD HH:mm:ss')
 
             await this.$axios.post('/user/register', this.register)
             .then((res) => {
                 const regiDiv = document.getElementsByClassName("RegiPoP")[0];
                 regiDiv.style.display = 'none';
                 this.$message.success(res.data);
-
             })
             .catch((err) => {
                 console.log(err);
@@ -168,9 +167,6 @@ export default {
             })
         },
 
-        formatDateTimeField(field) {
-            return moment.utc(field).utcOffset(9).format('YYYY-MM-DD HH:mm:ss');
-        }
     }
 }
 </script>
