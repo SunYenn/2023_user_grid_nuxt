@@ -123,6 +123,7 @@ export default {
     },
 
     mounted() {
+        this.$axios.defaults.headers.common['accesstoken'] = getCookie('token');
         this.callRoleGrp()
     },
 
@@ -141,14 +142,10 @@ export default {
 
         async regi_user() {
 
-            this.register.ettUserMst.acct_exp_dt = moment.utc(this.register.ettUserMst.acct_exp_dt).utcOffset(9).format('YYYY-MM-DD HH:mm:ss')
-            this.register.ettUserMst.card_exp_dt = moment.utc(this.register.ettUserMst.card_exp_dt).utcOffset(9).format('YYYY-MM-DD HH:mm:ss')
+            this.register.ettUserMst.acct_exp_dt = formatDateTimeField(this.register.ettUserMst.acct_exp_dt)
+            this.register.ettUserMst.card_exp_dt = formatDateTimeField(this.register.ettUserMst.card_exp_dt)
 
-            await this.$axios.post('/user/register', this.register, {
-                headers : {
-                    'accesstoken': getCookie('token'),
-                }
-            })
+            await this.$axios.post('/user/register', this.register)
             .then((res) => {
                 const regiDiv = document.getElementsByClassName("RegiPoP")[0];
                 regiDiv.style.display = 'none';
@@ -162,17 +159,17 @@ export default {
         },
 
         callRoleGrp() {
-            this.$axios.get('/user/roleList', {
-                headers : {
-                    'accesstoken': getCookie('token'),
-                }
-            })
+            this.$axios.get('/user/roleList')
             .then((res) => {
                 this.role_grp = res.data;
             })
             .catch((err) => {
                 console.error(err);
             })
+        },
+
+        formatDateTimeField(field) {
+            return moment.utc(field).utcOffset(9).format('YYYY-MM-DD HH:mm:ss');
         }
     }
 }
