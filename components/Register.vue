@@ -74,7 +74,7 @@
                 <div>
                     <div>
                         <span class="input-label">역할</span>
-                        <el-select v-model="register.ettRoleGrp.role_grp_seq" placeholder="Select">
+                        <el-select v-model="register.ettUserRoleGrpMap.role_grp_seq" placeholder="Select">
                             <el-option
                                 v-for="item in role_grp"
                                 :key="item.role_grp_seq"
@@ -114,9 +114,9 @@ export default {
                     user_pwd: '',
                     user_pwd_chk: '',
                 },
-                ettRoleGrp : {
+                ettUserRoleGrpMap : {
                     role_grp_seq: ''
-                } 
+                }
             },
             role_grp : []
         }
@@ -152,9 +152,12 @@ export default {
             .then((res) => {
                 const regiDiv = document.getElementsByClassName("RegiPoP")[0];
                 regiDiv.style.display = 'none';
+                this.$message.success(res.data);
+
             })
             .catch((err) => {
-                console.error(err);
+                console.log(err);
+                this.$message.error(err.response.data);
             })
         },
 
