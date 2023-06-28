@@ -100,7 +100,10 @@ body {
     padding-top: 0px !important;
 }
 
-.footer {
+.paging {
+    position: absolute;
+    bottom: 25px;
+    width: calc(100% - 80px);
     display: flex;
     justify-content: space-between;
 }

@@ -34,7 +34,7 @@
     </el-form>
 
     <div class="btns">
-      <el-button v-if="selectedIdxs.length > 0" @click="test">삭제</el-button>
+      <el-button v-if="selectedIdxs.length > 0" >삭제</el-button>
       <el-button @click="showRegiPop">등록</el-button>
       <!-- <el-button>일괄등록</el-button> -->
       <el-button>Excel 다운로드</el-button>
@@ -44,15 +44,15 @@
       <Table :selectedIdxs="selectedIdxs" :paging="paging" :tableData="tableData" @select="setSelectedIdxs" @setPaging="setPaging" @altercontent="setContent"/>
     </div>
 
-    <div class="footer">
-      <el-select v-model="paging[0].page_size" style="width: 100px;" @change="call_axios">
-        <el-option label="5" value="5" align="center"></el-option>
-        <el-option label="7" value="7" align="center"></el-option>
-        <el-option label="10" value="10" align="center"></el-option>
-      </el-select>
-      <el-pagination background layout="prev, pager, next" @current-change="handleCurrentChange"
-        :current-page="paging[0].current_page" :total="total_page">
-      </el-pagination>
+    <div class="footer paging">
+        <el-select v-model="paging[0].page_size" style="width: 100px;" @change="call_axios">
+          <el-option label="5" value="5" align="center"></el-option>
+          <el-option label="7" value="7" align="center"></el-option>
+          <el-option label="10" value="10" align="center"></el-option>
+        </el-select>
+        <el-pagination background layout="prev, pager, next" @current-change="handleCurrentChange"
+          :current-page="paging[0].current_page" :total="total_page">
+        </el-pagination>
     </div>
 
     <div class="RegiPoP" style="display: none;">
@@ -81,7 +81,7 @@ export default {
   data() {
     return {
       tableData: [],
-      total_page: 100,
+      total_page: 0,
       
       paging : [{
         page_size: 10, 
