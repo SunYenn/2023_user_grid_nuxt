@@ -1,8 +1,8 @@
 <template>
-    <el-form class="PoPForm" :model="register" @submit.native.prevent="regi_user">
+    <el-form class="PoPForm" :model="alter" @submit.native.prevent="alter_user">
         <div class="header">
             <div>
-                <h3>사용자 등록</h3>
+                <h3>사용자 정보 수정</h3>
             </div>
             <div class="pointer" @click="close"><i class="el-icon-close"></i></div>
         </div>
@@ -10,71 +10,25 @@
             <div class="form">
                 <div>
                     <div>
-                        <span class="input-label">ID</span>
-                        <el-input placeholder="ID" v-model="register.ettUserMst.user_id">
-                        </el-input>
-                    </div>
-                    <div>
                         <span class="input-label">이름</span>
-                        <el-input placeholder="이름" v-model="register.ettUserMst.user_name">
+                        <el-input placeholder="이름" v-model="alter.ettUserMst.user_name">
+                        </el-input>
+                    </div>
+                    <div>
+                        <span class="input-label">사원번호</span>
+                        <el-input placeholder="사원번호" v-model="alter.ettUserMst.user_sno">
                         </el-input>
                     </div>
                 </div>
                 <div>
                     <div>
-                        <span class="input-label">비밀번호</span>
-                        <el-input 
-                            placeholder="비밀번호" 
-                            v-model="register.ettUserPwd.user_pwd"
-                            type="password" 
-                        ></el-input>
-                    </div>
-                    <div>
-                        <span class="input-label">비밀번호 확인</span>
-                        <el-input 
-                            placeholder="비밀번호 확인" 
-                            v-model="register.ettUserPwd.user_pwd_chk"
-                            type="password" 
-                        ></el-input>
-                    </div>
-                </div>
-                <div>
-                    <div>
-                        <span class="input-label">전화번호</span>
-                        <el-input 
-                            placeholder="전화번호" 
-                            v-model="register.ettUserMst.user_telno" 
-                            @input="regexPhonenum"
-                        ></el-input>
-                    </div>
-                    <div>
-                        <span class="input-label">유효기간</span>
-                        <el-date-picker
-                            v-model="register.ettUserMst.acct_exp_dt"
-                            type="datetime"
-                            placeholder="계정 유효기간">
-                        </el-date-picker>
-                    </div>
-                </div>
-                <div>
-                    <div>
-                        <span class="input-label">카드번호</span>
-                        <el-input placeholder="카드번호" v-model="register.ettUserMst.card_id">
+                        <span class="input-label">이메일</span>
+                        <el-input placeholder="이메일" v-model="alter.ettUserMst.user_email">
                         </el-input>
                     </div>
-                    <div>
-                        <span class="input-label">카드 유효기간</span>
-                        <el-date-picker
-                            v-model="register.ettUserMst.card_exp_dt"
-                            type="datetime"
-                            placeholder="카드 유효기간">
-                        </el-date-picker>
-                    </div>
-                </div>
-                <div>
                     <div>
                         <span class="input-label">역할</span>
-                        <el-select v-model="register.ettUserRoleGrpMap.role_grp_seq" placeholder="Select">
+                        <el-select v-model="alter.ettUserRoleGrpMap.role_grp_seq" placeholder="Select">
                             <el-option
                                 v-for="item in role_grp"
                                 :key="item.role_grp_seq"
@@ -83,13 +37,45 @@
                             </el-option>
                         </el-select>
                     </div>
-                    <div></div>
+                </div>
+                <div>
+                    <div>
+                        <span class="input-label">전화번호</span>
+                        <el-input 
+                            placeholder="전화번호" 
+                            v-model="alter.ettUserMst.user_telno" 
+                            @input="regexPhonenum"
+                        ></el-input>
+                    </div>
+                    <div>
+                        <span class="input-label">유효기간</span>
+                        <el-date-picker
+                            v-model="alter.ettUserMst.acct_exp_dt"
+                            type="datetime"
+                            placeholder="계정 유효기간">
+                        </el-date-picker>
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <span class="input-label">카드번호</span>
+                        <el-input placeholder="카드번호" v-model="alter.ettUserMst.card_id">
+                        </el-input>
+                    </div>
+                    <div>
+                        <span class="input-label">카드 유효기간</span>
+                        <el-date-picker
+                            v-model="alter.ettUserMst.card_exp_dt"
+                            type="datetime"
+                            placeholder="카드 유효기간">
+                        </el-date-picker>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="footer">
             <el-button @click="close">취소</el-button>
-            <el-button type="primary" native-type="regi_user">저장</el-button>
+            <el-button type="primary" native-type="alter_user">저장</el-button>
         </div>
     </el-form>
 </template>
@@ -99,20 +85,25 @@ import moment from 'moment';
 import { getCookie } from '@/utils/cookie'
 
 export default {
+
+    props: {
+        userData: {
+        type: Array,
+        default: () => [],
+        },
+    },
+
     data() {
         return {
-            register: {
+            alter: {
                 ettUserMst : {
-                    user_id: '',
                     user_name: '',
+                    user_sno: '',
+                    user_email: '',
                     user_telno: '',
                     acct_exp_dt: '',
                     card_id: '',
                     card_exp_dt: '',
-                },
-                ettUserPwd : {
-                    user_pwd: '',
-                    user_pwd_chk: '',
                 },
                 ettUserRoleGrpMap : {
                     role_grp_seq: ''
@@ -127,28 +118,35 @@ export default {
         this.callRoleGrp()
     },
 
+    watch: {
+        userData: function (val) {
+            // userData에 대해 직접적인 참조가 아닌 독립적인 참조를 하도록 복사하여 사용
+            this.alter.ettUserMst = Object.assign({}, val[0]);
+        },
+    },
+
     methods: {
         close() {
-            const regiDiv = document.getElementsByClassName("RegiPoP")[0];
-            regiDiv.style.display = 'none';
+            const alterDiv = document.getElementsByClassName("AlterPoP")[0];
+            alterDiv.style.display = 'none';
         },
 
         regexPhonenum() {
-            this.register.ettUserMst.user_telno = this.register.ettUserMst.user_telno
+            this.alter.ettUserMst.user_telno = this.alter.ettUserMst.user_telno
                 .replace(/[^0-9]/g, "")
                 .replace(/(^02|^0505|^1[0-9]{3}|^0[0-9]{2})([0-9]+)?([0-9]{4})$/, "$1-$2-$3")
                 .replace("--", "-");
         },
 
-        async regi_user() {
+        async alter_user() {
 
-            this.register.ettUserMst.acct_exp_dt = moment.utc(this.register.ettUserMst.acct_exp_dt).utcOffset(9).format('YYYY-MM-DD HH:mm:ss')
-            this.register.ettUserMst.card_exp_dt = moment.utc(this.register.ettUserMst.card_exp_dt).utcOffset(9).format('YYYY-MM-DD HH:mm:ss')
+            this.alter.ettUserMst.acct_exp_dt = moment.utc(this.alter.ettUserMst.acct_exp_dt).utcOffset(9).format('YYYY-MM-DD HH:mm:ss')
+            this.alter.ettUserMst.card_exp_dt = moment.utc(this.alter.ettUserMst.card_exp_dt).utcOffset(9).format('YYYY-MM-DD HH:mm:ss')
 
-            await this.$axios.post('/user/register', this.register)
+            await this.$axios.post('/user/alter', this.alter)
             .then((res) => {
-                const regiDiv = document.getElementsByClassName("RegiPoP")[0];
-                regiDiv.style.display = 'none';
+                const alterDiv = document.getElementsByClassName("AlterPoP")[0];
+                alterDiv.style.display = 'none';
                 this.$message.success(res.data);
             })
             .catch((err) => {

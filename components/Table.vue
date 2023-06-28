@@ -27,13 +27,13 @@
         </div>
       </template>
       <template slot-scope="scope">
-        <span class="pointer">{{ scope.row.user_name }}</span>
+        <span class="pointer" @click="showAlterPop1(scope.row)">{{ scope.row.user_name }}</span>
       </template>
     </el-table-column>
 
     <el-table-column prop="user_id" label="ID">
       <template slot-scope="scope">
-        <span class="pointer">{{ scope.row.user_id }}</span>
+        <span class="pointer" @click="showAlterPop2(scope.row.user_id)">{{ scope.row.user_id }}</span>
       </template>
     </el-table-column>
 
@@ -41,7 +41,7 @@
 
     <el-table-column prop="cre_id" label="등록자">
       <template slot-scope="scope">
-        <span class="pointer">{{ scope.row.cre_id }}</span>
+        <span class="pointer" @click="showAlterPop2(scope.row.user_id)">{{ scope.row.cre_id }}</span>
       </template>
     </el-table-column>
 
@@ -79,6 +79,7 @@
 </template>
     
 <script>
+import { getCookie } from '@/utils/cookie'
 
 export default {
 
@@ -106,80 +107,6 @@ export default {
         cre_dt_fg : true,
         udt_dt_Fg : true
       },
-
-      // tableData: [{
-      //   user_seq : 71,
-      //   user_name: '다층 선예은',
-      //   user_id: 'bjoh3',
-      //   role_grp_name : '구역관리자',
-      //   cre_id: 'admin013',
-      //   cre_dt: '2023-06-01 14:19:08',
-      //   udt_id: 'bjoh3',
-      //   udt_dt: '2023-06-01 15:19:08'
-      // },{
-      //   user_seq : 72,
-      //   user_name: '다층 선예은',
-      //   user_id: 'bjoh3',
-      //   role_grp_name : '구역관리자',
-      //   cre_id: 'admin013',
-      //   cre_dt: '2023-06-01 14:19:08',
-      //   udt_id: 'bjoh3',
-      //   udt_dt: '2023-06-01 15:19:08'
-      // },{
-      //   user_seq : 73,
-      //   user_name: '다층 선예은',
-      //   user_id: 'bjoh3',
-      //   role_grp_name : '구역관리자',
-      //   cre_id: 'admin013',
-      //   cre_dt: '2023-06-01 14:19:08',
-      //   udt_id: 'bjoh3',
-      //   udt_dt: '2023-06-01 15:19:08'
-      // },{
-      //   user_seq : 74,
-      //   user_name: '다층 선예은',
-      //   user_id: 'bjoh3',
-      //   role_grp_name : '구역관리자',
-      //   cre_id: 'admin013',
-      //   cre_dt: '2023-06-01 14:19:08',
-      //   udt_id: 'bjoh3',
-      //   udt_dt: '2023-06-01 15:19:08'
-      // },{
-      //   user_seq : 75,
-      //   user_name: '다층 선예은',
-      //   user_id: 'bjoh3',
-      //   role_grp_name : '구역관리자',
-      //   cre_id: 'admin013',
-      //   cre_dt: '2023-06-01 14:19:08',
-      //   udt_id: 'bjoh3',
-      //   udt_dt: '2023-06-01 15:19:08'
-      // },{
-      //   user_seq : 76,
-      //   user_name: '다층 선예은',
-      //   user_id: 'bjoh3',
-      //   role_grp_name : '구역관리자',
-      //   cre_id: 'admin013',
-      //   cre_dt: '2023-06-01 14:19:08',
-      //   udt_id: 'bjoh3',
-      //   udt_dt: '2023-06-01 15:19:08'
-      // },{
-      //   user_seq : 77,
-      //   user_name: '다층 선예은',
-      //   user_id: 'bjoh3',
-      //   role_grp_name : '구역관리자',
-      //   cre_id: 'admin013',
-      //   cre_dt: '2023-06-01 14:19:08',
-      //   udt_id: 'bjoh3',
-      //   udt_dt: '2023-06-01 15:19:08'
-      // },{
-      //   user_seq : 78,
-      //   user_name: '다층 선예은',
-      //   user_id: 'bjoh3',
-      //   role_grp_name : '구역관리자',
-      //   cre_id: 'admin013',
-      //   cre_dt: '2023-06-01 14:19:08',
-      //   udt_id: 'bjoh3',
-      //   udt_dt: '2023-06-01 15:19:08'
-      // }]
     }
   },
 
@@ -230,6 +157,29 @@ export default {
       this.orderFlag[field] = !this.orderFlag[field];
       this.paging[0][field] = this.orderFlag[field] == true ? 'asc' : 'desc';
       this.$emit('setPaging', this.paging);
+    },
+
+    showAlterPop1(data) {
+      const regiDiv = document.getElementsByClassName("AlterPoP")[0];
+      regiDiv.style.display = '';
+      this.$emit('altercontent', data);
+    },
+
+    showAlterPop2(data) {
+      const regiDiv = document.getElementsByClassName("AlterPoP")[0];
+      regiDiv.style.display = '';
+      this.$axios.get('/user/getUserData/' + data , {
+        headers : {
+          'accesstoken': getCookie('token'),
+        }
+      })
+      .then((res) => {
+        console.log(res.data);
+        this.$emit('altercontent', res.data);
+      })
+      .catch((error) => {
+        this.$message.error("사용자 정보를 불러오는데 실패했습니다.")
+      })
     }
   },
 

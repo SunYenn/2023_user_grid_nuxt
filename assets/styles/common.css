@@ -124,12 +124,23 @@ body {
 	top: 0;
 	left: 0;
 	width: calc(100% - 40px);
+	height: calc(100vh - 41px);
+	background-color: rgba(0, 0, 0, .4);
+    padding: 0px;
+}
+
+.AlterPoP {
+    position: absolute;
+	z-index: 999;
+	top: 0;
+	left: 0;
+	width: calc(100% - 40px);
 	height: calc(100vh - 40px);
 	background-color: rgba(0, 0, 0, .4);
     padding: 0px;
 }
 
-.RegiPoP > .regiForm {
+.PoPForm {
     background-color: #fff;
 	position: absolute;
 	top: calc(50vh - 240px);
@@ -141,49 +152,51 @@ body {
 	width: 800px;
 }
 
-.RegiPoP > .regiForm > div {
+.PoPForm > div {
     margin: 15px 20px;
 }
 
-.RegiPoP .header {
+.PoPForm .header {
     display: flex;
     justify-content: space-between;
 }
 
-.RegiPoP .header i {
+.PoPForm .header i {
     font-weight: 500;
 }
 
-.RegiPoP .header i:hover {
+.PoPForm .header i:hover {
     font-weight: 900;
 }
 
 
-.RegiPoP .form > div {
+.PoPForm .form > div {
     display: flex;
     justify-content: space-around;
 }
 
-.RegiPoP .form > div > div {
+.PoPForm .form > div > div {
     width: 50%;
     display: flex;
     justify-content: flex-end;
 }
 
-.RegiPoP .form > div > div > .el-input {
+.PoPForm .form > div > div > .el-input {
     width: 200px;
 }
 
-.RegiPoP .form > div > div > .el-select {
+.PoPForm .form > div > div > .el-select {
     width: 200px;
 }
 
-.RegiPoP .footer {
+.PoPForm .footer {
     display: flex;
     justify-content: center
 }
 
-.RegiPoP .footer > button {
+.PoPForm .footer > button {
     width: 100px;
     border: 1px solid #aaa;
 }
+
+

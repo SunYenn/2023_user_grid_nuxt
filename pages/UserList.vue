@@ -41,7 +41,7 @@
     </div>
 
     <div class="components">
-      <Table :selectedIdxs="selectedIdxs" :paging="paging" :tableData="tableData" @select="setSelectedIdxs" @setPaging="setPaging" />
+      <Table :selectedIdxs="selectedIdxs" :paging="paging" :tableData="tableData" @select="setSelectedIdxs" @setPaging="setPaging" @altercontent="setContent"/>
     </div>
 
     <div class="footer">
@@ -59,12 +59,17 @@
       <Register />
     </div>
 
+    <div class="AlterPoP" style="display: none;">
+      <Alter :userData="userData" />
+    </div>
+
   </div>
 </template>
 
 <script>
 import Table from '@/components/Table.vue';
 import Register from '@/components/Register.vue';
+import Alter from '@/components/Alter.vue';
 import { mapActions } from 'vuex';
 import { getCookie } from '@/utils/cookie'
 
@@ -91,7 +96,8 @@ export default {
         search_telno : ''
 
       }],
-      selectedIdxs: []
+      selectedIdxs: [],
+      userData: []
     }
   },
 
@@ -143,6 +149,9 @@ export default {
     setPaging(paging) {
       this.paging = paging;
       this.call_axios();
+    },
+    setContent(data) {
+      this.userData = [data];
     },
 
     // 등록창 열기
