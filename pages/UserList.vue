@@ -34,14 +34,16 @@
     </el-form>
 
     <div class="btns">
-      <el-button v-if="selectedIdxs.length > 0" >삭제</el-button>
+      <el-button v-if="selectedIdxs.length > 0" @click="deleteUsers">삭제</el-button>
       <el-button @click="showRegiPop">등록</el-button>
-      <!-- <el-button>일괄등록</el-button> -->
-      <el-button>Excel 다운로드</el-button>
+      <el-button @click="excelDown">Excel 다운로드</el-button>
     </div>
 
     <div class="components">
-      <Table :selectedIdxs="selectedIdxs" :paging="paging" :tableData="tableData" @select="setSelectedIdxs" @setPaging="setPaging" @altercontent="setContent"/>
+      <Table 
+        :selectedIdxs="selectedIdxs" :paging="paging" :tableData="tableData" :selectedRows="selectedRows"
+        @select="setSelectedIdxs" @setPaging="setPaging" @altercontent="setContent" @setRows="setRows"
+      />
     </div>
 
     <div class="footer paging">
@@ -50,8 +52,12 @@
           <el-option label="7" value="7" align="center"></el-option>
           <el-option label="10" value="10" align="center"></el-option>
         </el-select>
-        <el-pagination background layout="prev, pager, next" @current-change="handleCurrentChange"
-          :current-page="paging[0].current_page" :total="total_page">
+        <el-pagination 
+          background layout="prev, pager, next" 
+          @current-change="handleCurrentChange"
+          :current-page="paging[0].current_page" 
+          :total="total_page"
+        >
         </el-pagination>
     </div>
 
@@ -74,9 +80,6 @@ import { mapActions } from 'vuex';
 import { getCookie } from '@/utils/cookie'
 
 export default {
-  components: {
-    Table // Table 컴포넌트 등록
-  },
 
   data() {
     return {
@@ -97,12 +100,15 @@ export default {
 
       }],
       selectedIdxs: [],
+      selectedRows: [],
       userData: []
     }
   },
 
   mounted() {
     this.call_axios();
+    this.selectedRows = this.arrayFill();
+    window.addEventListener('keydown', this.escDown);
   },
 
   methods: {
@@ -129,6 +135,16 @@ export default {
 
     },
 
+    escDown(event) {
+      if(event.keyCode == 27) {
+        if (document.getElementsByClassName("AlterPoP")[0].style.display === '') {
+          document.getElementsByClassName("AlterPoP")[0].style.display = 'none';
+        } else if (document.getElementsByClassName("RegiPoP")[0].style.display === '') {
+          document.getElementsByClassName("RegiPoP")[0].style.display = 'none';
+        }
+      }
+    },
+
     // 전화번호 검색 정규식
     regexPhonenum() {
       this.paging[0].search_telno = this.paging[0].search_telno
@@ -139,6 +155,8 @@ export default {
 
     handleCurrentChange(current_page) {
       this.paging[0].current_page = current_page;
+      this.selectedIdxs = [];
+      this.selectedRows = this.arrayFill();
       this.call_axios();
     },
 
@@ -152,6 +170,9 @@ export default {
     },
     setContent(data) {
       this.userData = [data];
+    },
+    setRows(data) {
+      this.selectedRows = data
     },
 
     // 등록창 열기
@@ -171,6 +192,36 @@ export default {
       this.paging[0].udt_dt_fg = '',
 
       this.call_axios();
+    },
+
+    arrayFill() {
+      return Array(10).fill(false);
+    },
+
+    deleteUsers() {
+      this.$axios.post('/user/delete', this.selectedIdxs , {
+        headers : {
+          'accesstoken': getCookie('token'),
+        }
+      })
+      .then((res) => {
+        this.call_axios()
+        this.selectedRows = this.arrayFill();
+      })
+      .catch((error) => {
+      })
+    },
+
+    excelDown() {
+      this.$axios.get('/user/excelDown', {
+        headers : {
+          'accesstoken': getCookie('token'),
+        }
+      })
+      .then((res) => {
+      })
+      .catch((error) => {
+      })
     }
 
   }

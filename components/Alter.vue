@@ -126,6 +126,7 @@ export default {
     },
 
     methods: {
+
         close() {
             const alterDiv = document.getElementsByClassName("AlterPoP")[0];
             alterDiv.style.display = 'none';

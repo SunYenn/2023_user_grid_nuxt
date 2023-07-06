@@ -4,8 +4,6 @@
     <el-table-column min-width="20">
       <template slot="header">
         <el-checkbox
-          :indeterminate="isIndeterminate"
-          v-model="selectAll"
           @change="handleSelectAll"
         ></el-checkbox>
       </template>
@@ -41,7 +39,7 @@
 
     <el-table-column prop="cre_id" label="등록자">
       <template slot-scope="scope">
-        <span class="pointer" @click="showAlterPop2(scope.row.user_id)">{{ scope.row.cre_id }}</span>
+        <span class="pointer" @click="showAlterPop2(scope.row.cre_id)">{{ scope.row.cre_id }}</span>
       </template>
     </el-table-column>
 
@@ -59,7 +57,7 @@
 
     <el-table-column prop="udt_id" label="수정자">
       <template slot-scope="scope">
-        <span class="pointer">{{ scope.row.udt_id }}</span>
+        <span class="pointer" @click="showAlterPop2(scope.row.udt_id)">{{ scope.row.udt_id }}</span>
       </template>
     </el-table-column>
 
@@ -88,6 +86,10 @@ export default {
       type: Array,
       default: () => [],
     },
+    selectedRows: {
+      type: Array,
+      default: () => [],
+    },
     paging: {
       type: Array,
       default: () => [],
@@ -101,7 +103,8 @@ export default {
   data() {
     return {
       selectAll: false,
-      selectedRows:[],
+      localSelectedRows: [],
+
       orderFlag: {
         user_name_fg : true,
         cre_dt_fg : true,
@@ -110,28 +113,24 @@ export default {
     }
   },
 
-  computed: {
-    isIndeterminate() {
-      return (
-        this.selectedRows.length > 0 &&
-        !this.isAllSelected() &&
-        !this.isNoneSelected()
-      );
-    }
-  },
+
 
   methods: {
 
     // 체크박스 기능
     handleSelectAll(checked) {
+
       if (checked) {
-        this.selectedRows = this.tableData.map(() => true);
+        this.localSelectedRows = this.tableData.map(() => true);
       } else {
-        this.selectedRows = [];
+        this.localSelectedRows = this.tableData.map(() => false);
       }
+
+      this.$emit('setRows', this.localSelectedRows);
     },
+
     handleSelectionChange(index) {
-      this.selectAll = this.isAllSelected();
+
       let arr = this.selectedIdxs;
       if (this.selectedRows[index]) {
         arr.push(this.tableData[index].user_seq);
@@ -144,12 +143,7 @@ export default {
         }
       }
       this.$emit('select', arr);
-    },
-    isAllSelected() {
-      return this.selectedRows.length === this.tableData.length;
-    },
-    isNoneSelected() {
-      return this.selectedRows.length === 0;
+      this.$emit('setRows', this.selectedRows);
     },
 
     // 정렬 기능
@@ -174,7 +168,6 @@ export default {
         }
       })
       .then((res) => {
-        console.log(res.data);
         this.$emit('altercontent', res.data);
       })
       .catch((error) => {
