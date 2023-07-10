@@ -113,8 +113,6 @@ export default {
     }
   },
 
-
-
   methods: {
 
     // 체크박스 기능
@@ -149,6 +147,11 @@ export default {
     // 정렬 기능
     toggleOrder(field) {
       this.orderFlag[field] = !this.orderFlag[field];
+
+      this.paging[0]['user_name_fg'] = '';
+      this.paging[0]['cre_dt_fg'] = '';
+      this.paging[0]['udt_dt_fg'] = '';
+
       this.paging[0][field] = this.orderFlag[field] == true ? 'asc' : 'desc';
       this.$emit('setPaging', this.paging);
     },

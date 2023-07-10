@@ -1,8 +1,8 @@
 <template>
   <div class="container">
-
+    
     <div class="header">
-      <h3>사용자 관리</h3>
+      <h3>그룹 관리</h3>
       <div>
         <el-button @click="choose">Manage</el-button>
         <el-button @click="logout">Logout</el-button>
@@ -13,18 +13,8 @@
       <div class="search">
         <div>
           <div class="search_div">
-            <span class="input-label">ID</span>
-            <el-input placeholder="ID" v-model="paging[0].search_id">
-            </el-input>
-          </div>
-          <div class="search_div">
-            <span class="input-label">이름</span>
-            <el-input placeholder="이름" v-model="paging[0].search_name">
-            </el-input>
-          </div>
-          <div class="search_div">
-            <span class="input-label">전화번호</span>
-            <el-input placeholder="전화번호" v-model="paging[0].search_telno" @input="regexPhonenum()">
+            <span class="input-label">그룹명</span>
+            <el-input placeholder="그룹명" v-model="paging[0].search_name">
             </el-input>
           </div>
         </div>
@@ -38,13 +28,13 @@
     </el-form>
 
     <div class="btns">
-      <el-button v-if="selectedIdxs.length > 0" @click="deleteUsers">삭제</el-button>
+      <el-button v-if="selectedIdxs.length > 0" @click="deleteRoles">삭제</el-button>
       <el-button @click="showRegiPop">등록</el-button>
       <el-button @click="excelDown">Excel 다운로드</el-button>
     </div>
 
     <div class="components">
-      <UserTable 
+      <RoleTable 
         :selectedIdxs="selectedIdxs" :paging="paging" :tableData="tableData" :selectedRows="selectedRows"
         @select="setSelectedIdxs" @setPaging="setPaging" @altercontent="setContent" @setRows="setRows"
       />
@@ -66,23 +56,23 @@
     </div>
 
     <div class="RegiPoP" style="display: none;">
-      <UserRegister ref="UserRegister"/>
+      <RoleRegister ref="RoleRegister"/>
     </div>
 
     <div class="AlterPoP" style="display: none;">
-      <UserAlter :userData="userData" ref="UserAlter"/>
+      <RoleAlter :roleData="roleData" ref="RoleAlter"/>
     </div>
 
   </div>
 </template>
 
 <script>
-import UserTable from '@/components/UserTable.vue';
-import UserRegister from '@/components/UserRegister.vue';
-import UserAlter from '@/components/UserAlter.vue';
+import RoleTable from '@/components/RoleTable.vue';
+import RoleRegister from '@/components/RoleRegister.vue';
+import RoleAlter from '@/components/RoleAlter.vue';
 import { mapActions } from 'vuex';
-import { excelDown } from '@/utils/getExcel'
 import { getCookie } from '@/utils/cookie'
+import { excelDown } from '@/utils/getExcel'
 
 export default {
 
@@ -95,18 +85,16 @@ export default {
         page_size: 10, 
         current_page: 1,
 
-        user_name_fg: '',
+        role_name_fg: '',
         cre_dt_fg: '',
         udt_dt_fg: '',
 
-        search_id : '',
         search_name : '',
-        search_telno : ''
 
       }],
       selectedIdxs: [],
       selectedRows: [],
-      userData: []
+      roleData: []
     }
   },
 
@@ -119,20 +107,20 @@ export default {
   methods: {
 
     ...mapActions(['logout']),
-    
+
     choose() {
       window.location.href = './choose'
     },
 
     async call_axios() {
 
-      await this.$axios.post('/user/list', this.paging[0] , {
+      await this.$axios.post('/role/list', this.paging[0] , {
         headers : {
           'accesstoken': getCookie('token'),
         }
       })
       .then((res) => {
-        this.tableData = res.data.userMsts
+        this.tableData = res.data.roleGrps
         this.total_page = res.data.total_page * 10;
       })
       .catch((error) => {
@@ -147,19 +135,11 @@ export default {
     escDown(event) {
       if(event.keyCode == 27) {
         if (document.getElementsByClassName("AlterPoP")[0].style.display === '') {
-          this.$refs.UserAlter.close();
+          this.$refs.RoleAlter.close();
         } else if (document.getElementsByClassName("RegiPoP")[0].style.display === '') {
-          this.$refs.UserRegister.close();
+          this.$refs.RoleRegister.close();
         }
       }
-    },
-
-    // 전화번호 검색 정규식
-    regexPhonenum() {
-      this.paging[0].search_telno = this.paging[0].search_telno
-        .replace(/[^0-9]/g, "")
-        .replace(/(^02|^0505|^1[0-9]{3}|^0[0-9]{2})([0-9]+)?([0-9]{4})$/, "$1-$2-$3")
-        .replace("--", "-");
     },
 
     handleCurrentChange(current_page) {
@@ -178,7 +158,7 @@ export default {
       this.call_axios();
     },
     setContent(data) {
-      this.userData = [data];
+      this.roleData = [data];
     },
     setRows(data) {
       this.selectedRows = data
@@ -192,11 +172,9 @@ export default {
 
     // 검색창 초기화
     reset() {
-      this.paging[0].search_id = '';
       this.paging[0].search_name = '';
-      this.paging[0].search_telno = '';
 
-      this.paging[0].user_name_fg = '',
+      this.paging[0].role_name_fg = '',
       this.paging[0].cre_dt_fg = '',
       this.paging[0].udt_dt_fg = '',
 
@@ -207,9 +185,8 @@ export default {
       return Array(10).fill(false);
     },
 
-    deleteUsers() {
-
-      this.$axios.post('/user/delete', this.selectedIdxs , {
+    deleteRoles() {
+      this.$axios.post('/role/delete', this.selectedIdxs , {
         headers : {
           'accesstoken': getCookie('token'),
         }
@@ -219,11 +196,12 @@ export default {
         this.selectedRows = this.arrayFill();
       })
       .catch((error) => {
+        this.$message.error('그룹 정보 삭제에 실패했습니다.');
       })
     },
 
     excelDown() {
-      this.$axios.get('/user/excelDown', {
+      this.$axios.get('/role/excelDown', {
         headers : {
           'accesstoken': getCookie('token'),
         },
@@ -231,7 +209,6 @@ export default {
       })
       .then((res) => {
         excelDown(res);
-
       })
       .catch((error) => {
         this.$message.error('파일 다운로드에 실패했습니다.');

@@ -8,13 +8,6 @@ body {
     background-color: #eee;
 }
 
-.logoutBtn {
-    position: fixed;
-    top: 33px;
-    right: 33px;
-    z-index: 99;
-}
-
 .container {
     background-color: white;
     margin: 20px;
@@ -23,10 +16,31 @@ body {
     height: calc(100vh - 45px);
 }
 
-.login {
+.container > .header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.container > .header > h3 {
+    line-height: 40px;
+}
+
+.login, .choose {
     margin: 180px 550px;
     height: calc(100vh - 360px);
     box-shadow: 1px 2px 5px 1px rgba(0, 0, 0, .1);
+}
+
+.choose > .buttons {
+    height: calc(100% - 164px);
+    box-sizing: border-box;
+    display: flex;
+}
+
+.choose > .buttons button {
+    width: calc(100% - 20px);
+    margin: 10px;
+    font-size: 16px;
 }
 
 .container>div {
@@ -67,6 +81,18 @@ body {
     justify-content: flex-end;
 }
 
+.search {
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #eee;
+}
+
+.search > div {
+    display: flex;
+    justify-content: space-between;
+}
+
 .form>div {
     border: 1px solid #ccc;
     border-bottom: none;
@@ -76,10 +102,6 @@ body {
 
 .form>div:last-child {
     border-bottom: 1px solid #ccc;
-}
-
-.search_div:last-child {
-    width: 500px;
 }
 
 .search_div > .el-input  {
@@ -113,8 +135,17 @@ body {
     overflow-y: auto;
 }
 
+.center {
+    text-align: center;
+}
+
 .pointer {
     cursor: pointer;
+}
+
+.pointer:hover {
+    font-weight: bold;
+    color: #66b1ff;
 }
 
 .grid .cell {

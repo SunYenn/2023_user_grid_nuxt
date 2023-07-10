@@ -28,7 +28,7 @@
                     </div>
                     <div>
                         <span class="input-label">역할</span>
-                        <el-select v-model="alter.ettUserRoleGrpMap.role_grp_seq" placeholder="Select">
+                        <el-select v-model="alter.ettUserMst.role_grp_name" placeholder="Select">
                             <el-option
                                 v-for="item in role_grp"
                                 :key="item.role_grp_seq"
@@ -151,7 +151,7 @@ export default {
                 this.$message.success(res.data);
             })
             .catch((err) => {
-                console.log(err);
+                console.log(err.response.status);
                 this.$message.error(err.response.data);
             })
         },

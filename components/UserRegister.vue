@@ -129,6 +129,22 @@ export default {
 
     methods: {
         close() {
+            this.register.ettUserMst = {
+                user_id: '',
+                user_name: '',
+                user_telno: '',
+                acct_exp_dt: '',
+                card_id: '',
+                card_exp_dt: '',
+            },
+            this.register.ettUserPwd = {
+                    user_pwd: '',
+                    user_pwd_chk: '',
+                },
+            this.register.ettUserRoleGrpMap = {
+                role_grp_seq: ''
+            }
+
             const regiDiv = document.getElementsByClassName("RegiPoP")[0];
             regiDiv.style.display = 'none';
         },

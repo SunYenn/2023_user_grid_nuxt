@@ -31,10 +31,7 @@ export default {
       .then(res => {
         alert("정보가 확인되었습니다.\n환영합니다!")
         setCookie('token', res.headers['accesstoken']);
-        setCookie('name', res.data['ettUserMst']['user_name']);
-        setCookie('id', res.data['ettUserMst']['user_id']);
-        setCookie('role', res.data['ettRoleGrp']['role_grp_name']);
-        this.$router.push("/UserList")
+        this.$router.push("/choose")
       }).catch(e => {
         console.log(e)
         alert("로그인 요청에 문제가 발생했습니다.")
@@ -44,9 +41,6 @@ export default {
 
     logout() {
       deleteCookie('token');
-      deleteCookie('name');
-      deleteCookie('id');
-      deleteCookie('role');
       this.$router.push("./");
       },
   }
