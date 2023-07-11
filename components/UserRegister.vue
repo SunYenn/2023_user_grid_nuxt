@@ -10,78 +10,94 @@
             <div class="form">
                 <div>
                     <div>
-                        <span class="input-label">ID</span>
-                        <el-input placeholder="ID" v-model="register.ettUserMst.user_id">
-                        </el-input>
+                        <div>
+                            <span class="input-label">ID</span>
+                            <el-input placeholder="ID" v-model="register.ettUserMst.user_id"/>
+                        </div>
                     </div>
                     <div>
-                        <span class="input-label">이름</span>
-                        <el-input placeholder="이름" v-model="register.ettUserMst.user_name">
-                        </el-input>
-                    </div>
-                </div>
-                <div>
-                    <div>
-                        <span class="input-label">비밀번호</span>
-                        <el-input 
-                            placeholder="비밀번호" 
-                            v-model="register.ettUserPwd.user_pwd"
-                            type="password" 
-                        ></el-input>
-                    </div>
-                    <div>
-                        <span class="input-label">비밀번호 확인</span>
-                        <el-input 
-                            placeholder="비밀번호 확인" 
-                            v-model="register.ettUserPwd.user_pwd_chk"
-                            type="password" 
-                        ></el-input>
+                        <div>
+                            <span class="input-label">이름</span>
+                            <el-input placeholder="이름" v-model="register.ettUserMst.user_name"/>
+                        </div>
                     </div>
                 </div>
                 <div>
                     <div>
-                        <span class="input-label">전화번호</span>
-                        <el-input 
-                            placeholder="전화번호" 
-                            v-model="register.ettUserMst.user_telno" 
-                            @input="regexPhonenum"
-                        ></el-input>
+                        <div>
+                            <span class="input-label">비밀번호</span>
+                            <el-input 
+                                placeholder="비밀번호" 
+                                v-model="register.ettUserPwd.user_pwd"
+                                type="password" 
+                            ></el-input>
+                        </div>
                     </div>
                     <div>
-                        <span class="input-label">유효기간</span>
-                        <el-date-picker
-                            v-model="register.ettUserMst.acct_exp_dt"
-                            type="datetime"
-                            placeholder="계정 유효기간">
-                        </el-date-picker>
-                    </div>
-                </div>
-                <div>
-                    <div>
-                        <span class="input-label">카드번호</span>
-                        <el-input placeholder="카드번호" v-model="register.ettUserMst.card_id">
-                        </el-input>
-                    </div>
-                    <div>
-                        <span class="input-label">카드 유효기간</span>
-                        <el-date-picker
-                            v-model="register.ettUserMst.card_exp_dt"
-                            type="datetime"
-                            placeholder="카드 유효기간">
-                        </el-date-picker>
+                        <div>
+                            <span class="input-label">비밀번호 확인</span>
+                            <el-input 
+                                placeholder="비밀번호 확인" 
+                                v-model="register.ettUserPwd.user_pwd_chk"
+                                type="password" 
+                            ></el-input>
+                        </div>
                     </div>
                 </div>
                 <div>
                     <div>
-                        <span class="input-label">역할</span>
-                        <el-select v-model="register.ettUserRoleGrpMap.role_grp_seq" placeholder="Select">
-                            <el-option
-                                v-for="item in role_grp"
-                                :key="item.role_grp_seq"
-                                :label="item.role_grp_name"
-                                :value="item.role_grp_seq">
-                            </el-option>
-                        </el-select>
+                        <div>
+                            <span class="input-label">전화번호</span>
+                            <el-input 
+                                placeholder="전화번호" 
+                                v-model="register.ettUserMst.user_telno" 
+                                @input="regexPhonenum"
+                            ></el-input>
+                        </div>
+                    </div>
+                    <div>
+                        <div>
+                            <span class="input-label">유효기간</span>
+                            <el-date-picker
+                                v-model="register.ettUserMst.acct_exp_dt"
+                                type="datetime"
+                                placeholder="계정 유효기간">
+                            </el-date-picker>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <div>
+                            <span class="input-label">카드번호</span>
+                            <el-input placeholder="카드번호" v-model="register.ettUserMst.card_id">
+                            </el-input>
+                        </div>
+                    </div>
+                    <div>
+                        <div>
+                            <span class="input-label">카드 유효기간</span>
+                            <el-date-picker
+                                v-model="register.ettUserMst.card_exp_dt"
+                                type="datetime"
+                                placeholder="카드 유효기간">
+                            </el-date-picker>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <div>
+                            <span class="input-label">역할</span>
+                            <el-select v-model="register.ettUserRoleGrpMap.role_grp_seq" placeholder="Select">
+                                <el-option
+                                    v-for="item in role_grp"
+                                    :key="item.role_grp_seq"
+                                    :label="item.role_grp_name"
+                                    :value="item.role_grp_seq">
+                                </el-option>
+                            </el-select>
+                        </div>
                     </div>
                     <div></div>
                 </div>
@@ -138,9 +154,9 @@ export default {
                 card_exp_dt: '',
             },
             this.register.ettUserPwd = {
-                    user_pwd: '',
-                    user_pwd_chk: '',
-                },
+                user_pwd: '',
+                user_pwd_chk: '',
+            },
             this.register.ettUserRoleGrpMap = {
                 role_grp_seq: ''
             }
@@ -161,11 +177,17 @@ export default {
             this.register.ettUserMst.acct_exp_dt = moment.utc(this.register.ettUserMst.acct_exp_dt).utcOffset(9).format('YYYY-MM-DD HH:mm:ss')
             this.register.ettUserMst.card_exp_dt = moment.utc(this.register.ettUserMst.card_exp_dt).utcOffset(9).format('YYYY-MM-DD HH:mm:ss')
 
+            if ( this.register.ettUserPwd.user_pwd !=  this.register.ettUserPwd.user_pwd_chk) {
+                return
+            }
+
+
             await this.$axios.post('/user/register', this.register)
             .then((res) => {
                 const regiDiv = document.getElementsByClassName("RegiPoP")[0];
                 regiDiv.style.display = 'none';
                 this.$message.success(res.data);
+                this.$parent.call_axios();
             })
             .catch((err) => {
                 console.log(err);

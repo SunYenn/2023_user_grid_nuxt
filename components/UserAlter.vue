@@ -10,65 +10,77 @@
             <div class="form">
                 <div>
                     <div>
-                        <span class="input-label">이름</span>
-                        <el-input placeholder="이름" v-model="alter.ettUserMst.user_name">
-                        </el-input>
+                        <div>
+                            <span class="input-label">이름</span>
+                            <el-input placeholder="이름" v-model="alter.ettUserMst.user_name"/>
+                        </div>
                     </div>
                     <div>
-                        <span class="input-label">사원번호</span>
-                        <el-input placeholder="사원번호" v-model="alter.ettUserMst.user_sno">
-                        </el-input>
+                        <div>
+                            <span class="input-label">사원번호</span>
+                            <el-input placeholder="사원번호" v-model="alter.ettUserMst.user_sno"/>
+                        </div>
                     </div>
                 </div>
                 <div>
                     <div>
-                        <span class="input-label">이메일</span>
-                        <el-input placeholder="이메일" v-model="alter.ettUserMst.user_email">
-                        </el-input>
+                        <div>
+                            <span class="input-label">이메일</span>
+                            <el-input placeholder="이메일" v-model="alter.ettUserMst.user_email"/>
+                        </div>
                     </div>
                     <div>
+                        <div>
                         <span class="input-label">역할</span>
-                        <el-select v-model="alter.ettUserMst.role_grp_name" placeholder="Select">
-                            <el-option
-                                v-for="item in role_grp"
-                                :key="item.role_grp_seq"
-                                :label="item.role_grp_name"
-                                :value="item.role_grp_seq">
-                            </el-option>
-                        </el-select>
+                            <el-select v-model="alter.ettUserMst.role_grp_name" placeholder="Select">
+                                <el-option
+                                    v-for="item in role_grp"
+                                    :key="item.role_grp_seq"
+                                    :label="item.role_grp_name"
+                                    :value="item.role_grp_seq">
+                                </el-option>
+                            </el-select>
+                        </div>
                     </div>
                 </div>
                 <div>
                     <div>
-                        <span class="input-label">전화번호</span>
-                        <el-input 
-                            placeholder="전화번호" 
-                            v-model="alter.ettUserMst.user_telno" 
-                            @input="regexPhonenum"
-                        ></el-input>
+                        <div>
+                            <span class="input-label">전화번호</span>
+                            <el-input 
+                                placeholder="전화번호" 
+                                v-model="alter.ettUserMst.user_telno" 
+                                @input="regexPhonenum"
+                            ></el-input>
+                        </div>
                     </div>
                     <div>
-                        <span class="input-label">유효기간</span>
-                        <el-date-picker
-                            v-model="alter.ettUserMst.acct_exp_dt"
-                            type="datetime"
-                            placeholder="계정 유효기간">
-                        </el-date-picker>
+                        <div>
+                            <span class="input-label">유효기간</span>
+                            <el-date-picker
+                                v-model="alter.ettUserMst.acct_exp_dt"
+                                type="datetime"
+                                placeholder="계정 유효기간">
+                            </el-date-picker>
+                        </div>
                     </div>
                 </div>
                 <div>
                     <div>
-                        <span class="input-label">카드번호</span>
-                        <el-input placeholder="카드번호" v-model="alter.ettUserMst.card_id">
-                        </el-input>
+                        <div>
+                            <span class="input-label">카드번호</span>
+                            <el-input placeholder="카드번호" v-model="alter.ettUserMst.card_id"/>
+                        </div>
                     </div>
                     <div>
-                        <span class="input-label">카드 유효기간</span>
-                        <el-date-picker
-                            v-model="alter.ettUserMst.card_exp_dt"
-                            type="datetime"
-                            placeholder="카드 유효기간">
-                        </el-date-picker>
+                        <div>
+                            <span class="input-label">카드 유효기간</span>
+                            <el-date-picker
+                                v-model="alter.ettUserMst.card_exp_dt"
+                                type="datetime"
+                                placeholder="카드 유효기간">
+                            </el-date-picker>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -149,9 +161,9 @@ export default {
                 const alterDiv = document.getElementsByClassName("AlterPoP")[0];
                 alterDiv.style.display = 'none';
                 this.$message.success(res.data);
+                this.$parent.call_axios();
             })
             .catch((err) => {
-                console.log(err.response.status);
                 this.$message.error(err.response.data);
             })
         },

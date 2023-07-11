@@ -45,32 +45,34 @@
 
     <div class="components">
       <UserTable 
-        :selectedIdxs="selectedIdxs" :paging="paging" :tableData="tableData" :selectedRows="selectedRows"
-        @select="setSelectedIdxs" @setPaging="setPaging" @altercontent="setContent" @setRows="setRows"
+        :selectedIdxs="selectedIdxs" 
+        :paging="paging" 
+        :tableData="tableData" 
+        :selectedRows="selectedRows"
+        @select="setSelectedIdxs" 
+        @setPaging="setPaging" 
+        @altercontent="setContent" 
+        @setRows="setRows" 
       />
     </div>
 
     <div class="footer paging">
-        <el-select v-model="paging[0].page_size" style="width: 100px;" @change="call_axios">
-          <el-option label="5" value="5" align="center"></el-option>
-          <el-option label="7" value="7" align="center"></el-option>
-          <el-option label="10" value="10" align="center"></el-option>
-        </el-select>
-        <el-pagination 
-          background layout="prev, pager, next" 
-          @current-change="handleCurrentChange"
-          :current-page="paging[0].current_page" 
-          :total="total_page"
-        >
-        </el-pagination>
+      <el-select v-model="paging[0].page_size" style="width: 100px;" @change="call_axios">
+        <el-option label="5" value="5" align="center"></el-option>
+        <el-option label="7" value="7" align="center"></el-option>
+        <el-option label="10" value="10" align="center"></el-option>
+      </el-select>
+      <el-pagination background layout="prev, pager, next" @current-change="handleCurrentChange"
+        :current-page="paging[0].current_page" :total="total_page">
+      </el-pagination>
     </div>
 
     <div class="RegiPoP" style="display: none;">
-      <UserRegister ref="UserRegister"/>
+      <UserRegister ref="UserRegister" />
     </div>
 
     <div class="AlterPoP" style="display: none;">
-      <UserAlter :userData="userData" ref="UserAlter"/>
+      <UserAlter :userData="userData" ref="UserAlter" />
     </div>
 
   </div>
@@ -90,19 +92,18 @@ export default {
     return {
       tableData: [],
       total_page: 0,
-      
-      paging : [{
-        page_size: 10, 
+
+      paging: [{
+        page_size: 10,
         current_page: 1,
 
         user_name_fg: '',
         cre_dt_fg: '',
         udt_dt_fg: '',
 
-        search_id : '',
-        search_name : '',
-        search_telno : ''
-
+        search_id: '',
+        search_name: '',
+        search_telno: ''
       }],
       selectedIdxs: [],
       selectedRows: [],
@@ -119,33 +120,33 @@ export default {
   methods: {
 
     ...mapActions(['logout']),
-    
+
     choose() {
       window.location.href = './choose'
     },
 
     async call_axios() {
 
-      await this.$axios.post('/user/list', this.paging[0] , {
-        headers : {
+      await this.$axios.post('/user/list', this.paging[0], {
+        headers: {
           'accesstoken': getCookie('token'),
         }
       })
-      .then((res) => {
-        this.tableData = res.data.userMsts
-        this.total_page = res.data.total_page * 10;
-      })
-      .catch((error) => {
-        this.$message.error('권한이 없습니다. \n선택 화면으로 넘어갑니다.');
-        setTimeout(() => {
-          window.location.href = "./choose";
-        }, 500);
-      })
+        .then((res) => {
+          this.tableData = res.data.userMsts
+          this.total_page = res.data.total_page * 10;
+        })
+        .catch((error) => {
+          this.$message.error('권한이 없습니다. \n선택 화면으로 넘어갑니다.');
+          setTimeout(() => {
+            window.location.href = "./choose";
+          }, 500);
+        })
 
     },
 
     escDown(event) {
-      if(event.keyCode == 27) {
+      if (event.keyCode == 27) {
         if (document.getElementsByClassName("AlterPoP")[0].style.display === '') {
           this.$refs.UserAlter.close();
         } else if (document.getElementsByClassName("RegiPoP")[0].style.display === '') {
@@ -197,10 +198,10 @@ export default {
       this.paging[0].search_telno = '';
 
       this.paging[0].user_name_fg = '',
-      this.paging[0].cre_dt_fg = '',
-      this.paging[0].udt_dt_fg = '',
+        this.paging[0].cre_dt_fg = '',
+        this.paging[0].udt_dt_fg = '',
 
-      this.call_axios();
+        this.call_axios();
     },
 
     arrayFill() {
@@ -209,34 +210,34 @@ export default {
 
     deleteUsers() {
 
-      this.$axios.post('/user/delete', this.selectedIdxs , {
-        headers : {
+      this.$axios.post('/user/delete', this.selectedIdxs, {
+        headers: {
           'accesstoken': getCookie('token'),
         }
       })
-      .then((res) => {
-        this.call_axios()
-        this.selectedRows = this.arrayFill();
-      })
-      .catch((error) => {
-      })
+        .then((res) => {
+          this.call_axios()
+          this.selectedRows = this.arrayFill();
+        })
+        .catch((error) => {
+        })
     },
 
     excelDown() {
       this.$axios.get('/user/excelDown', {
-        headers : {
+        headers: {
           'accesstoken': getCookie('token'),
         },
         responseType: 'blob'
       })
-      .then((res) => {
-        excelDown(res);
+        .then((res) => {
+          excelDown(res);
 
-      })
-      .catch((error) => {
-        this.$message.error('파일 다운로드에 실패했습니다.');
-        console.log(error)
-      })
+        })
+        .catch((error) => {
+          this.$message.error('파일 다운로드에 실패했습니다.');
+          console.log(error)
+        })
     },
 
   }

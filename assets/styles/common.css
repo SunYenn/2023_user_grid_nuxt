@@ -195,31 +195,28 @@ body {
     justify-content: space-between;
 }
 
-.PoPForm .header i {
-    font-weight: 500;
-}
-
-.PoPForm .header i:hover {
-    font-weight: 900;
-}
-
-
-.PoPForm .form > div {
-    display: flex;
-    justify-content: space-around;
-}
 
 .PoPForm .form > div > div {
     width: 50%;
+}
+
+.PoPForm .form > div > div > div {
     display: flex;
     justify-content: flex-end;
 }
 
-.PoPForm .form > div > div > .el-input {
+.PoPForm .form > div > div > p {
+    text-align: right;
+    margin-top: 5px;
+    color: tomato;
+    font-size: 13px;
+}
+
+.PoPForm .form .el-input {
     width: 200px;
 }
 
-.PoPForm .form > div > div > .el-select {
+.PoPForm .form .el-select {
     width: 200px;
 }
 

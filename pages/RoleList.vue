@@ -35,6 +35,7 @@
 
     <div class="components">
       <RoleTable 
+      :ref="asd"
         :selectedIdxs="selectedIdxs" :paging="paging" :tableData="tableData" :selectedRows="selectedRows"
         @select="setSelectedIdxs" @setPaging="setPaging" @altercontent="setContent" @setRows="setRows"
       />

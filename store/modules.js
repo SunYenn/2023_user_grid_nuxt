@@ -41,7 +41,7 @@ export default {
 
     logout() {
       deleteCookie('token');
-      this.$router.push("./");
-      },
+      this.$router.push("/");
+    },
   }
 }
