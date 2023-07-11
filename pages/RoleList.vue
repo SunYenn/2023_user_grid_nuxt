@@ -29,15 +29,22 @@
 
     <div class="btns">
       <el-button v-if="selectedIdxs.length > 0" @click="deleteRoles">삭제</el-button>
-      <el-button @click="showRegiPop">등록</el-button>
+      <el-button @click="modal('register' , true)">등록</el-button>
       <el-button @click="excelDown">Excel 다운로드</el-button>
     </div>
 
     <div class="components">
       <RoleTable 
       :ref="asd"
-        :selectedIdxs="selectedIdxs" :paging="paging" :tableData="tableData" :selectedRows="selectedRows"
-        @select="setSelectedIdxs" @setPaging="setPaging" @altercontent="setContent" @setRows="setRows"
+        :selectedIdxs="selectedIdxs" 
+        :paging="paging" 
+        :tableData="tableData" 
+        :selectedRows="selectedRows"
+        @select="setSelectedIdxs" 
+        @setPaging="setPaging" 
+        @altercontent="setContent" 
+        @setRows="setRows"
+        @ctrlModal="modal"
       />
     </div>
 
@@ -56,12 +63,21 @@
         </el-pagination>
     </div>
 
-    <div class="RegiPoP" style="display: none;">
-      <RoleRegister ref="RoleRegister"/>
+    <div>
+      <RoleRegister 
+        ref="RoleRegister"
+        v-show="openModal.register" 
+        @ctrlModal="modal"
+      />
     </div>
 
-    <div class="AlterPoP" style="display: none;">
-      <RoleAlter :roleData="roleData" ref="RoleAlter"/>
+    <div>
+      <RoleAlter 
+        :roleData="roleData" 
+        ref="RoleAlter"
+        v-show="openModal.alter" 
+        @ctrlModal="modal"
+      />
     </div>
 
   </div>
@@ -81,6 +97,11 @@ export default {
     return {
       tableData: [],
       total_page: 0,
+
+      openModal: {
+        register : false,
+        alter : false
+      },
       
       paging : [{
         page_size: 10, 
@@ -135,12 +156,17 @@ export default {
 
     escDown(event) {
       if(event.keyCode == 27) {
-        if (document.getElementsByClassName("AlterPoP")[0].style.display === '') {
+        if (this.openModal.alter) {
           this.$refs.RoleAlter.close();
-        } else if (document.getElementsByClassName("RegiPoP")[0].style.display === '') {
+        } else if (this.openModal.register) {
           this.$refs.RoleRegister.close();
         }
       }
+    },
+
+    // 팝업창 열고 닫기
+    modal(pop, data) {
+      this.openModal[pop] = data;
     },
 
     handleCurrentChange(current_page) {

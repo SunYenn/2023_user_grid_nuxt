@@ -1,52 +1,54 @@
 <template>
-    <el-form class="PoPForm" :model="alter" @submit.native.prevent="alter_role">
-        <div class="header">
-            <div>
-                <h3>그룹 정보 수정</h3>
-            </div>
-            <div class="pointer" @click="close"><i class="el-icon-close"></i></div>
-        </div>
-        <div class="body">
-            <div class="form">
+    <div class="popBack">
+        <el-form class="PoPForm" :model="alter" @submit.native.prevent="alter_role">
+            <div class="header">
                 <div>
+                    <h3>그룹 정보 수정</h3>
+                </div>
+                <div class="pointer" @click="close"><i class="el-icon-close"></i></div>
+            </div>
+            <div class="body">
+                <div class="form">
                     <div>
                         <div>
-                            <span class="input-label">그룹명</span>
-                            <el-input placeholder="그룹명" v-model="alter.ettRoleGrp.role_grp_name"></el-input>
+                            <div>
+                                <span class="input-label">그룹명</span>
+                                <el-input placeholder="그룹명" v-model="alter.ettRoleGrp.role_grp_name"></el-input>
+                            </div>
+                            <p v-show="valid.ettRoleGrp.role_grp_name">필수 항목입니다.</p>
                         </div>
-                        <p v-show="valid.ettRoleGrp.role_grp_name">필수 항목입니다.</p>
+                        <div>
+                            <div>
+                                <span class="input-label">그룹설명</span>
+                                <el-input placeholder="그룹설명" v-model="alter.ettRoleGrp.role_grp_desc"></el-input>
+                            </div>
+                            <p v-show="valid.ettRoleGrp.role_grp_desc">필수 항목입니다.</p>
+                        </div>
                     </div>
                     <div>
                         <div>
-                            <span class="input-label">그룹설명</span>
-                            <el-input placeholder="그룹설명" v-model="alter.ettRoleGrp.role_grp_desc"></el-input>
+                            <div>
+                                <span class="input-label">상태코드</span>
+                                <el-input placeholder="상태코드" v-model="alter.ettRoleGrp.stat_cd"></el-input>
+                            </div>
+                            <p v-show="valid.ettRoleGrp.stat_cd">2자리의 숫자나 영문자만 입력 가능합니다.</p>
                         </div>
-                        <p v-show="valid.ettRoleGrp.role_grp_desc">필수 항목입니다.</p>
+                        <div>
+                            <div>
+                                <span class="input-label">추가 권한 여부</span>
+                                <el-input placeholder="추가 권한 여부" v-model="alter.ettRoleGrp.hv_acc_role_yn"></el-input>
+                            </div>
+                            <p v-show="valid.ettRoleGrp.hv_acc_role_yn">Y or N만 입력 가능합니다.</p>
+                        </div>
                     </div>
                 </div>
-                <div>
-                    <div>
-                        <div>
-                            <span class="input-label">상태코드</span>
-                            <el-input placeholder="상태코드" v-model="alter.ettRoleGrp.stat_cd"></el-input>
-                        </div>
-                        <p v-show="valid.ettRoleGrp.stat_cd">2자리의 숫자나 영문자만 입력 가능합니다.</p>
-                    </div>
-                    <div>
-                        <div>
-                            <span class="input-label">추가 권한 여부</span>
-                            <el-input placeholder="추가 권한 여부" v-model="alter.ettRoleGrp.hv_acc_role_yn"></el-input>
-                        </div>
-                        <p v-show="valid.ettRoleGrp.hv_acc_role_yn">Y or N만 입력 가능합니다.</p>
-                    </div>
-                </div>
             </div>
-        </div>
-        <div class="footer">
-            <el-button @click="close">취소</el-button>
-            <el-button type="primary" native-type="alter_role">저장</el-button>
-        </div>
-    </el-form>
+            <div class="footer">
+                <el-button @click="close">취소</el-button>
+                <el-button type="primary" native-type="alter_role">저장</el-button>
+            </div>
+        </el-form>
+    </div>
 </template>
 
 <script>
@@ -117,8 +119,7 @@ export default {
                 hv_acc_role_yn: false, 
             };
 
-            const alterDiv = document.getElementsByClassName("AlterPoP")[0];
-            alterDiv.style.display = 'none';
+            this.$emit('ctrlModal', "alter", false)
         },
 
         async alter_role() {
@@ -129,9 +130,8 @@ export default {
 
                 await this.$axios.post('/role/alter', this.alter)
                 .then((res) => {
-                    const alterDiv = document.getElementsByClassName("AlterPoP")[0];
-                    alterDiv.style.display = 'none';
                     this.$message.success(res.data);
+                    this.$emit('ctrlModal', "alter", false)
                     this.$parent.call_axios();
                 })
                 .catch((err) => {

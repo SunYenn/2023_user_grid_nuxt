@@ -1,60 +1,62 @@
 <template>
-    <el-form class="PoPForm" :model="register" @submit.native.prevent="regi_role">
-        <div class="header">
-            <div>
-                <h3>그룹 등록</h3>
-            </div>
-            <div class="pointer" @click="close"><i class="el-icon-close"></i></div>
-        </div>
-        <div class="body">
-            <div class="form">
+    <div class="popBack">
+        <el-form class="PoPForm" :model="register" @submit.native.prevent="regi_role">
+            <div class="header">
                 <div>
+                    <h3>그룹 등록</h3>
+                </div>
+                <div class="pointer" @click="close"><i class="el-icon-close"></i></div>
+            </div>
+            <div class="body">
+                <div class="form">
                     <div>
                         <div>
-                            <span class="input-label">그룹명</span>
-                            <el-input placeholder="그룹명" v-model="register.ettRoleGrp.role_grp_name"></el-input>
+                            <div>
+                                <span class="input-label">그룹명</span>
+                                <el-input placeholder="그룹명" v-model="register.ettRoleGrp.role_grp_name"></el-input>
+                            </div>
+                            <p v-show="valid.ettRoleGrp.role_grp_name">필수 항목입니다.</p>
                         </div>
-                        <p v-show="valid.ettRoleGrp.role_grp_name">필수 항목입니다.</p>
+                        <div>
+                            <div>
+                                <span class="input-label">그룹 설명</span>
+                                <el-input placeholder="그룹설명" v-model="register.ettRoleGrp.role_grp_desc"></el-input>
+                            </div>
+                            <p v-show="valid.ettRoleGrp.role_grp_desc">필수 항목입니다.</p>
+                        </div>
                     </div>
                     <div>
                         <div>
-                            <span class="input-label">그룹 설명</span>
-                            <el-input placeholder="그룹설명" v-model="register.ettRoleGrp.role_grp_desc"></el-input>
+                            <div>
+                                <span class="input-label">상태코드</span>
+                                <el-input 
+                                    placeholder="상태코드" 
+                                    v-model="register.ettRoleGrp.stat_cd"
+                                    maxlength="2"
+                                ></el-input>
+                            </div>
+                            <p v-show="valid.ettRoleGrp.stat_cd">2자리의 숫자나 영문자만 입력 가능합니다.</p>
                         </div>
-                        <p v-show="valid.ettRoleGrp.role_grp_desc">필수 항목입니다.</p>
+                        <div>
+                            <div>
+                                <span class="input-label">추가 권한 여부</span>
+                                <el-input 
+                                    placeholder="Y or N" 
+                                    v-model="register.ettRoleGrp.hv_acc_role_yn"
+                                    maxlength="1"
+                                ></el-input>
+                            </div>
+                            <p v-show="valid.ettRoleGrp.hv_acc_role_yn">Y or N만 입력 가능합니다.</p>
+                        </div>
                     </div>
                 </div>
-                <div>
-                    <div>
-                        <div>
-                            <span class="input-label">상태코드</span>
-                            <el-input 
-                                placeholder="상태코드" 
-                                v-model="register.ettRoleGrp.stat_cd"
-                                maxlength="2"
-                            ></el-input>
-                        </div>
-                        <p v-show="valid.ettRoleGrp.stat_cd">2자리의 숫자나 영문자만 입력 가능합니다.</p>
-                    </div>
-                    <div>
-                        <div>
-                            <span class="input-label">추가 권한 여부</span>
-                            <el-input 
-                                placeholder="Y or N" 
-                                v-model="register.ettRoleGrp.hv_acc_role_yn"
-                                maxlength="1"
-                            ></el-input>
-                        </div>
-                        <p v-show="valid.ettRoleGrp.hv_acc_role_yn">Y or N만 입력 가능합니다.</p>
-                    </div>
-                </div>
             </div>
-        </div>
-        <div class="footer">
-            <el-button @click="close">취소</el-button>
-            <el-button type="primary" native-type="regi_role">저장</el-button>
-        </div>
-    </el-form>
+            <div class="footer">
+                <el-button @click="close">취소</el-button>
+                <el-button type="primary" native-type="regi_role">저장</el-button>
+            </div>
+        </el-form>
+    </div>
 </template>
 
 <script>
@@ -105,12 +107,7 @@ export default {
 
     methods: {
         close() {
-            this.register.ettRoleGrp = { 
-                role_grp_name: '',
-                role_grp_desc: '',
-                stat_cd: '',
-                hv_acc_role_yn: '', 
-            };
+            this.register.ettRoleGrp = {};
 
             this.valid.ettRoleGrp = { 
                 role_grp_name: false,
@@ -119,8 +116,7 @@ export default {
                 hv_acc_role_yn: false, 
             };
 
-            const regiDiv = document.getElementsByClassName("RegiPoP")[0];
-            regiDiv.style.display = 'none';
+            this.$emit('ctrlModal', "register", false)
 
         },
 
@@ -128,11 +124,10 @@ export default {
 
             const vld = this.valid.ettRoleGrp;
             
-            if(vld.role_grp_name && vld.role_grp_desc && vld.stat_cd && vld.hv_acc_role_yn) {
+            if(!(vld.role_grp_name && vld.role_grp_desc && vld.stat_cd && vld.hv_acc_role_yn)) {
                 await this.$axios.post('/role/register', this.register)
                 .then((res) => {
-                    const regiDiv = document.getElementsByClassName("RegiPoP")[0];
-                    regiDiv.style.display = 'none';
+                    this.$emit('ctrlModal', "register", false)
                     this.$message.success(res.data);
                     this.$parent.call_axios();
                 })

@@ -25,13 +25,13 @@
         </div>
       </template>
       <template slot-scope="scope">
-        <span class="pointer" @click="showAlterPop1(scope.row)">{{ scope.row.user_name }}</span>
+        <span class="pointer" @click="showAlterPop(scope.row)">{{ scope.row.user_name }}</span>
       </template>
     </el-table-column>
 
     <el-table-column prop="user_id" label="ID">
       <template slot-scope="scope">
-        <span class="pointer" @click="showAlterPop2(scope.row.user_id)">{{ scope.row.user_id }}</span>
+        <span class="pointer" @click="showAlterPop(scope.row)">{{ scope.row.user_id }}</span>
       </template>
     </el-table-column>
 
@@ -39,7 +39,7 @@
 
     <el-table-column prop="cre_id" label="등록자">
       <template slot-scope="scope">
-        <span class="pointer" @click="showAlterPop2(scope.row.cre_id)">{{ scope.row.cre_id }}</span>
+        <span>{{ scope.row.cre_id }}</span>
       </template>
     </el-table-column>
 
@@ -57,7 +57,7 @@
 
     <el-table-column prop="udt_id" label="수정자">
       <template slot-scope="scope">
-        <span class="pointer" @click="showAlterPop2(scope.row.udt_id)">{{ scope.row.udt_id }}</span>
+        <span>{{ scope.row.udt_id }}</span>
       </template>
     </el-table-column>
 
@@ -77,8 +77,6 @@
 </template>
     
 <script>
-import { getCookie } from '@/utils/cookie'
-
 export default {
 
   props: {
@@ -156,27 +154,11 @@ export default {
       this.$emit('setPaging', this.paging);
     },
 
-    showAlterPop1(data) {
-      const regiDiv = document.getElementsByClassName("AlterPoP")[0];
-      regiDiv.style.display = '';
+    showAlterPop(data) {
+      this.$emit('ctrlModal', "alter", true)
       this.$emit('altercontent', data);
-    },
-
-    showAlterPop2(data) {
-      const regiDiv = document.getElementsByClassName("AlterPoP")[0];
-      regiDiv.style.display = '';
-      this.$axios.get('/user/getUserData/' + data , {
-        headers : {
-          'accesstoken': getCookie('token'),
-        }
-      })
-      .then((res) => {
-        this.$emit('altercontent', res.data);
-      })
-      .catch((error) => {
-        this.$message.error("사용자 정보를 불러오는데 실패했습니다.")
-      })
     }
+
   },
 
 }

@@ -153,8 +153,7 @@ export default {
     },
 
     showAlterPop1(data) {
-      const regiDiv = document.getElementsByClassName("AlterPoP")[0];
-      regiDiv.style.display = '';
+      this.$emit('ctrlModal', "alter", true)
       this.$emit('altercontent', data);
     },
 

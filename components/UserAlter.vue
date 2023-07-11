@@ -1,95 +1,97 @@
 <template>
-    <el-form class="PoPForm" :model="alter" @submit.native.prevent="alter_user">
-        <div class="header">
-            <div>
-                <h3>사용자 정보 수정</h3>
+    <div class="popBack">
+        <el-form class="PoPForm" :model="alter" @submit.native.prevent="alter_user">
+            <div class="header">
+                <div>
+                    <h3>사용자 정보 수정</h3>
+                </div>
+                <div class="pointer" @click="close"><i class="el-icon-close"></i></div>
             </div>
-            <div class="pointer" @click="close"><i class="el-icon-close"></i></div>
-        </div>
-        <div class="body">
-            <div class="form">
-                <div>
+            <div class="body">
+                <div class="form">
                     <div>
                         <div>
-                            <span class="input-label">이름</span>
-                            <el-input placeholder="이름" v-model="alter.ettUserMst.user_name"/>
+                            <div>
+                                <span class="input-label">이름</span>
+                                <el-input placeholder="이름" v-model="alter.ettUserMst.user_name"/>
+                            </div>
+                        </div>
+                        <div>
+                            <div>
+                                <span class="input-label">사원번호</span>
+                                <el-input placeholder="사원번호" v-model="alter.ettUserMst.user_sno"/>
+                            </div>
                         </div>
                     </div>
                     <div>
                         <div>
-                            <span class="input-label">사원번호</span>
-                            <el-input placeholder="사원번호" v-model="alter.ettUserMst.user_sno"/>
+                            <div>
+                                <span class="input-label">이메일</span>
+                                <el-input placeholder="이메일" v-model="alter.ettUserMst.user_email"/>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div>
-                    <div>
                         <div>
-                            <span class="input-label">이메일</span>
-                            <el-input placeholder="이메일" v-model="alter.ettUserMst.user_email"/>
-                        </div>
-                    </div>
-                    <div>
-                        <div>
-                        <span class="input-label">역할</span>
-                            <el-select v-model="alter.ettUserMst.role_grp_name" placeholder="Select">
-                                <el-option
-                                    v-for="item in role_grp"
-                                    :key="item.role_grp_seq"
-                                    :label="item.role_grp_name"
-                                    :value="item.role_grp_seq">
-                                </el-option>
-                            </el-select>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <div>
-                        <div>
-                            <span class="input-label">전화번호</span>
-                            <el-input 
-                                placeholder="전화번호" 
-                                v-model="alter.ettUserMst.user_telno" 
-                                @input="regexPhonenum"
-                            ></el-input>
+                            <div>
+                            <span class="input-label">역할</span>
+                                <el-select v-model="alter.ettUserMst.role_grp_name" placeholder="Select">
+                                    <el-option
+                                        v-for="item in role_grp"
+                                        :key="item.role_grp_seq"
+                                        :label="item.role_grp_name"
+                                        :value="item.role_grp_seq">
+                                    </el-option>
+                                </el-select>
+                            </div>
                         </div>
                     </div>
                     <div>
                         <div>
-                            <span class="input-label">유효기간</span>
-                            <el-date-picker
-                                v-model="alter.ettUserMst.acct_exp_dt"
-                                type="datetime"
-                                placeholder="계정 유효기간">
-                            </el-date-picker>
+                            <div>
+                                <span class="input-label">전화번호</span>
+                                <el-input 
+                                    placeholder="전화번호" 
+                                    v-model="alter.ettUserMst.user_telno" 
+                                    @input="regexPhonenum"
+                                ></el-input>
+                            </div>
+                        </div>
+                        <div>
+                            <div>
+                                <span class="input-label">유효기간</span>
+                                <el-date-picker
+                                    v-model="alter.ettUserMst.acct_exp_dt"
+                                    type="datetime"
+                                    placeholder="계정 유효기간">
+                                </el-date-picker>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div>
                     <div>
                         <div>
-                            <span class="input-label">카드번호</span>
-                            <el-input placeholder="카드번호" v-model="alter.ettUserMst.card_id"/>
+                            <div>
+                                <span class="input-label">카드번호</span>
+                                <el-input placeholder="카드번호" v-model="alter.ettUserMst.card_id"/>
+                            </div>
                         </div>
-                    </div>
-                    <div>
                         <div>
-                            <span class="input-label">카드 유효기간</span>
-                            <el-date-picker
-                                v-model="alter.ettUserMst.card_exp_dt"
-                                type="datetime"
-                                placeholder="카드 유효기간">
-                            </el-date-picker>
+                            <div>
+                                <span class="input-label">카드 유효기간</span>
+                                <el-date-picker
+                                    v-model="alter.ettUserMst.card_exp_dt"
+                                    type="datetime"
+                                    placeholder="카드 유효기간">
+                                </el-date-picker>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="footer">
-            <el-button @click="close">취소</el-button>
-            <el-button type="primary" native-type="alter_user">저장</el-button>
-        </div>
-    </el-form>
+            <div class="footer">
+                <el-button @click="close">취소</el-button>
+                <el-button type="primary" native-type="alter_user">저장</el-button>
+            </div>
+        </el-form>
+    </div>
 </template>
 
 <script>
@@ -140,8 +142,7 @@ export default {
     methods: {
 
         close() {
-            const alterDiv = document.getElementsByClassName("AlterPoP")[0];
-            alterDiv.style.display = 'none';
+            this.$emit('ctrlModal', "alter", false)
         },
 
         regexPhonenum() {
@@ -158,8 +159,7 @@ export default {
 
             await this.$axios.post('/user/alter', this.alter)
             .then((res) => {
-                const alterDiv = document.getElementsByClassName("AlterPoP")[0];
-                alterDiv.style.display = 'none';
+                this.$emit('ctrlModal', "alter", false)
                 this.$message.success(res.data);
                 this.$parent.call_axios();
             })

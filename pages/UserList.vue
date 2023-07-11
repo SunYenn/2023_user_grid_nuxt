@@ -39,7 +39,7 @@
 
     <div class="btns">
       <el-button v-if="selectedIdxs.length > 0" @click="deleteUsers">삭제</el-button>
-      <el-button @click="showRegiPop">등록</el-button>
+      <el-button @click="modal('register' , true)">등록</el-button>
       <el-button @click="excelDown">Excel 다운로드</el-button>
     </div>
 
@@ -53,6 +53,7 @@
         @setPaging="setPaging" 
         @altercontent="setContent" 
         @setRows="setRows" 
+        @ctrlModal="modal"
       />
     </div>
 
@@ -67,12 +68,21 @@
       </el-pagination>
     </div>
 
-    <div class="RegiPoP" style="display: none;">
-      <UserRegister ref="UserRegister" />
+    <div>
+      <UserRegister 
+        ref="UserRegister" 
+        v-show="openModal.register" 
+        @ctrlModal="modal"
+      />
     </div>
 
-    <div class="AlterPoP" style="display: none;">
-      <UserAlter :userData="userData" ref="UserAlter" />
+    <div>
+      <UserAlter 
+        :userData="userData" 
+        ref="UserAlter" 
+        v-show="openModal.alter" 
+        @ctrlModal="modal"
+      />
     </div>
 
   </div>
@@ -92,6 +102,11 @@ export default {
     return {
       tableData: [],
       total_page: 0,
+
+      openModal: {
+        register : false,
+        alter : false
+      },
 
       paging: [{
         page_size: 10,
@@ -147,12 +162,17 @@ export default {
 
     escDown(event) {
       if (event.keyCode == 27) {
-        if (document.getElementsByClassName("AlterPoP")[0].style.display === '') {
+        if (this.openModal.alter) {
           this.$refs.UserAlter.close();
-        } else if (document.getElementsByClassName("RegiPoP")[0].style.display === '') {
+        } else if (this.openModal.register) {
           this.$refs.UserRegister.close();
         }
       }
+    },
+    
+    // 팝업창 열고 닫기
+    modal(pop, data) {
+      this.openModal[pop] = data;
     },
 
     // 전화번호 검색 정규식
@@ -183,12 +203,6 @@ export default {
     },
     setRows(data) {
       this.selectedRows = data
-    },
-
-    // 등록창 열기
-    showRegiPop() {
-      const regiDiv = document.getElementsByClassName("RegiPoP")[0];
-      regiDiv.style.display = '';
     },
 
     // 검색창 초기화
