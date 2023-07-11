@@ -161,7 +161,7 @@ export default {
             .then((res) => {
                 this.$emit('ctrlModal', "alter", false)
                 this.$message.success(res.data);
-                this.$parent.call_axios();
+                this.$parent.init();
             })
             .catch((err) => {
                 this.$message.error(err.response.data);

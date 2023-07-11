@@ -132,7 +132,7 @@ export default {
                 .then((res) => {
                     this.$message.success(res.data);
                     this.$emit('ctrlModal', "alter", false)
-                    this.$parent.call_axios();
+                    this.$parent.init();
                 })
                 .catch((err) => {
                     console.log(err.response.status);

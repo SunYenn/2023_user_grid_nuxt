@@ -23,7 +23,7 @@ import { mapActions } from 'vuex';
   export default {
 
     mounted() {
-      if(getCookie('token') === null) {
+      if(getCookie('token') == null) {
         this.$message.error('로그인되지 않았습니다. \n로그인 화면으로 넘어갑니다.');
         setTimeout(() => {
           this.logout();

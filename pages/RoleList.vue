@@ -9,7 +9,7 @@
       </div>
     </div>
 
-    <el-form :model="paging[0]" @submit.native.prevent="call_axios">
+    <el-form :model="paging[0]" @submit.native.prevent="init">
       <div class="search">
         <div>
           <div class="search_div">
@@ -21,7 +21,7 @@
         <div>
           <div class="search_div">
             <el-button @click="reset">초기화</el-button>
-            <el-button type="primary" native-type="call_axios">검색</el-button>
+            <el-button type="primary" native-type="init">검색</el-button>
           </div>
         </div>
       </div>
@@ -49,10 +49,8 @@
     </div>
 
     <div class="footer paging">
-        <el-select v-model="paging[0].page_size" style="width: 100px;" @change="call_axios">
-          <el-option label="5" value="5" align="center"></el-option>
-          <el-option label="7" value="7" align="center"></el-option>
-          <el-option label="10" value="10" align="center"></el-option>
+        <el-select v-model="paging[0].page_size" style="width: 100px;" @change="init">
+          <el-option v-for="option in [5, 7, 10]" :key="option" :label="option" :value="option" align="center"></el-option>
         </el-select>
         <el-pagination 
           background layout="prev, pager, next" 
@@ -121,7 +119,7 @@ export default {
   },
 
   mounted() {
-    this.call_axios();
+    this.init();
     this.selectedRows = this.arrayFill();
     window.addEventListener('keydown', this.escDown);
   },
@@ -134,7 +132,7 @@ export default {
       window.location.href = './choose'
     },
 
-    async call_axios() {
+    async init() {
 
       await this.$axios.post('/role/list', this.paging[0] , {
         headers : {
@@ -173,7 +171,7 @@ export default {
       this.paging[0].current_page = current_page;
       this.selectedIdxs = [];
       this.selectedRows = this.arrayFill();
-      this.call_axios();
+      this.init();
     },
 
     // props
@@ -182,7 +180,7 @@ export default {
     },
     setPaging(paging) {
       this.paging = paging;
-      this.call_axios();
+      this.init();
     },
     setContent(data) {
       this.roleData = [data];
@@ -205,7 +203,7 @@ export default {
       this.paging[0].cre_dt_fg = '',
       this.paging[0].udt_dt_fg = '',
 
-      this.call_axios();
+      this.init();
     },
 
     arrayFill() {
@@ -219,7 +217,7 @@ export default {
         }
       })
       .then((res) => {
-        this.call_axios()
+        this.init()
         this.selectedRows = this.arrayFill();
       })
       .catch((error) => {
